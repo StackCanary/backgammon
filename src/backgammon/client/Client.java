@@ -2,14 +2,12 @@ package backgammon.client;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class Client extends JFrame {
 	
@@ -22,33 +20,26 @@ public class Client extends JFrame {
 		setSize(640,460);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		JPanel pane = new JPanel();
-		pane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		//getContentPane().add(pane);
-		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setOpaque(true);
 		menuBar.setPreferredSize(new Dimension(200, 25));
 		menuBar.setVisible(true);
 		
-		try {
-			JPanelWithBackground jPanel = new JPanelWithBackground("background.png");
-			getContentPane().add(new JPanelWithBackground("background.png"));
-		} catch (IOException e) {
-			menuBar.setBackground(Color.lightGray);
-		}
+		JPanelWithBackground jPanelWithBackground = new JPanelWithBackground();
+		getContentPane().add(new JPanelWithBackground());
 		
 		
-		JMenu file = new JMenu("File");
-		file.setVisible(true);
+		
+//		JMenu file = new JMenu("File");
+//		file.setVisible(true);
 		
 		JMenuItem exit = new JMenu("Exit");
 		exit.setVisible(true);
 		
 		
-		setJMenuBar(menuBar);
-		menuBar.add(file);
-		file.add(exit);
+//		setJMenuBar(menuBar);
+//		menuBar.add(file);
+//		file.add(exit);
 	}
 	
 	public static void main(String args[]) {
@@ -60,5 +51,7 @@ public class Client extends JFrame {
 			}
 			
 		});
+		
+		
 	}
 }
