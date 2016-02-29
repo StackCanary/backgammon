@@ -10,9 +10,14 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+import backgammon.client.config.Config.Side;
+
 public class Triangle extends JComponent{
 	private int i = 0;
 	private int counters = 0;
+	public Side side;
+	
+	
 	/**
 	 * 
 	 */
@@ -20,7 +25,8 @@ public class Triangle extends JComponent{
 	
 	public Triangle(int i) {
 		this.i = i;
-		
+		this.side = Side.black;
+		highlight(4);
 	}
 	
 	@Override
@@ -41,7 +47,7 @@ public class Triangle extends JComponent{
 
 	}
 	
-	public void drawElements(int n) {
+	public void drawCircles(int n) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		
@@ -76,7 +82,7 @@ public class Triangle extends JComponent{
 			gbc.weightx = 3;
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
-			add(new Circle(Color.green), gbc);
+			add(new Circle(this.side), gbc);
 		}
 		
 		for (int i = n; i < 5; i++) {
@@ -95,7 +101,7 @@ public class Triangle extends JComponent{
 	}
 	
 	public void highlight(int n) {
-		drawElements(n);
+		drawCircles(n);
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		if (n > 4) {
@@ -103,7 +109,7 @@ public class Triangle extends JComponent{
 			return;
 		}
 		
-		gbc.gridx = 0;
+		gbc.gridx = 1;
 		gbc.gridy = n;
 		gbc.fill = GridBagConstraints.BOTH;
 		
@@ -113,7 +119,7 @@ public class Triangle extends JComponent{
 		
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		add(new HighlightCircle(), gbc);
+		add(new EmptyCircle(true), gbc);
 	}
 	
 	public void drawInitialboard() {
@@ -121,11 +127,11 @@ public class Triangle extends JComponent{
 	}
 	
 	public void add() {
-		drawElements(this.counters + 1);
+		drawCircles(this.counters + 1);
 	}
 	
 	public void remove() {
-		drawElements(this.counters);
+		drawCircles(this.counters);
 	}
 	
 }
