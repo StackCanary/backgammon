@@ -16,12 +16,14 @@ import backgammon.client.ui.shape.Triangle;
 //http://stackoverflow.com/questions/1466240/
 public class BoardView extends JComponent {
 	private static final long serialVersionUID = 1L;
-
+	public static ArrayList<Triangle> triangleController;
+	
 	public BoardView() {
 		setBackground(Color.red);
 		setLayout(new GridBagLayout());
 		
 		ArrayList<Triangle> triangles = new ArrayList<Triangle>();
+		triangleController = triangles;
 		
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {
@@ -48,6 +50,9 @@ public class BoardView extends JComponent {
 		}
 		
 		JDummy spacer = new JDummy();
+		Dimension size = new Dimension(40, 80);
+		spacer.setMinimumSize(size);
+		spacer.setPreferredSize(size);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 6;
 		gbc.gridy = 1;

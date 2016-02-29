@@ -11,7 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 public class Triangle extends JComponent{
-	int i = 0;
+	private int i = 0;
+	private int counters = 0;
 	/**
 	 * 
 	 */
@@ -19,7 +20,6 @@ public class Triangle extends JComponent{
 	
 	public Triangle(int i) {
 		this.i = i;
-		drawElements(1);
 		
 	}
 	
@@ -50,33 +50,82 @@ public class Triangle extends JComponent{
 			return;
 		}
 		
+		this.counters = n;
+		
+		JDummy spacer = new JDummy();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		add(spacer, gbc);
+		
+		spacer = new JDummy();
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		add(spacer, gbc);
+		
+		
 		for (int i = 0; i < n; i++) {
-			gbc.gridx = 0;
+			gbc.gridx = 1;
 			gbc.gridy = i;
 			
 			if (this.i >= 13 && this.i <= 24) {
 				gbc.gridy = 5 - i;
 			}
 			
-			gbc.weightx = 1;
+			gbc.weightx = 3;
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
 			add(new Circle(Color.green), gbc);
 		}
 		
 		for (int i = n; i < 5; i++) {
-			gbc.gridx = 0;
+			gbc.gridx = 1;
 			gbc.gridy = i;
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (this.i >= 13 && this.i <= 24) {
 				gbc.gridy = 5 - i;
 			}
-			gbc.weightx = 1;
+			gbc.weightx = 3;
 			gbc.weighty = 1;
-			add(new HighlightCircle(), gbc);
+			add(new EmptyCircle(), gbc);
 		}
 		
+	}
+	
+	public void highlight(int n) {
+		drawElements(n);
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		if (n > 4) {
+			System.out.println("N is greater than 4 in Triangle");
+			return;
+		}
+		
+		gbc.gridx = 0;
+		gbc.gridy = n;
+		gbc.fill = GridBagConstraints.BOTH;
+		
+		if (this.i >= 13 && this.i <= 24) {
+			gbc.gridy = 5 - n;
+		}
+		
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		add(new HighlightCircle(), gbc);
+	}
+	
+	public void drawInitialboard() {
+		
+	}
+	
+	public void add() {
+		drawElements(this.counters + 1);
+	}
+	
+	public void remove() {
+		drawElements(this.counters);
 	}
 	
 }
