@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import backgammon.client.ui.shape.DiceDraw;
 import backgammon.client.ui.shape.TriangleController;
 
 public class Client extends JFrame {
@@ -36,6 +37,12 @@ public class Client extends JFrame {
 		gameview = board;
 		getContentPane().add(board, BorderLayout.CENTER);
 		pack();
+		
+		DiceDraw dice = new DiceDraw();
+		
+		add(dice);
+		
+		
 	}
 	
 	public static void menu() {
