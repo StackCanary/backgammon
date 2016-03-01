@@ -14,6 +14,7 @@ public class TriangleController {
 	public TriangleController(ArrayList<Triangle> triangles) {
 		this.triangles = triangles;
 		drawInitBoard();
+		highlightCounter(1);
 	}
 	
 	public Triangle getTriangle(int n) {
