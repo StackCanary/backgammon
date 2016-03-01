@@ -8,33 +8,33 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import backgammon.client.ui.shape.JDummy;
 import backgammon.client.ui.shape.Triangle;
+import backgammon.client.ui.shape.TriangleController;
 
 
 //http://stackoverflow.com/questions/1466240/
 public class BoardView extends JComponent {
 	private static final long serialVersionUID = 1L;
-	public static ArrayList<Triangle> triangleController;
+	public TriangleController triangleController;
+	public ArrayList<Triangle> triangles = new ArrayList<Triangle>();
 	
 	public BoardView() {
 		setBackground(Color.red);
 		setLayout(new GridBagLayout());
 		
-		ArrayList<Triangle> triangles = new ArrayList<Triangle>();
-		triangleController = triangles;
-		
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {
 			Triangle triangle = new Triangle(i);
 			gbc = new GridBagConstraints();
-			gbc.gridx = i - 1;
-			gbc.gridy = 0;
+			gbc.gridx = 12 - i;
+			gbc.gridy = 2;
 			
 			if(i > 12){
-				gbc.gridy = 2;
-				gbc.gridx -= 12;
+				gbc.gridy = 0;
+				gbc.gridx = (-gbc.gridx - 1);
 			}
 			
 			/* for spacer */
@@ -46,6 +46,7 @@ public class BoardView extends JComponent {
 			gbc.fill = GridBagConstraints.BOTH;
 			add(triangle, gbc);
 			
+			System.out.println(gbc.gridx + ":" + gbc.gridy);
 			triangles.add(triangle);
 		}
 		
@@ -58,12 +59,16 @@ public class BoardView extends JComponent {
 		gbc.gridy = 1;
 		add(spacer, gbc);
 		
+		setController();
+		
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
 	}
 	
+	public void setController() {
+		triangleController = new TriangleController(triangles);
+	}
 }

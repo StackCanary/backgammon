@@ -12,8 +12,6 @@ import backgammon.client.config.Config.Side;
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
 
-	private boolean pressed = false;
-	private boolean released = false;
 	private boolean clicked = false; 
 	
 	public HeadCircle(Side side) {
@@ -23,57 +21,34 @@ public class HeadCircle extends Circle implements MouseListener {
 		addMouseListener(this);
 	}
 	
-	public void paintClickedObject() {
-		
-	}
-	
-	public void paintUnclickedObject() {
-		
-	}
-	
-	public void paintMouseExited() {
-		
-	}
-	
-	public void paintMouseReleased() {
-		
-	}
-	
-	public void paintMouseOver() {
-		this.myColor = Color.red;
-		repaint();
-	}
-	
-	public void paintMouseExit() {
-		this.myColor = this.save;
-		repaint();
-	}
-	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		pressed = clicked;
-		paintClickedObject();
+		clicked = true;
+		this.myColor = Color.red;
+		repaint();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		paintMouseOver();
+		this.myColor = Color.red;
+		repaint();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		paintMouseExit();
+		if (!clicked) {
+			this.myColor = this.save;
+			repaint();
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		pressed = clicked;
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		pressed = clicked;
 		repaint();
 	}
 

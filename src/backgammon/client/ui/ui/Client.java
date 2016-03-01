@@ -7,10 +7,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
+import javax.sound.midi.ControllerEventListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import backgammon.client.ui.shape.TriangleController;
 
 public class Client extends JFrame {
 	public BoardView gameview;
@@ -52,7 +55,7 @@ public class Client extends JFrame {
 			}
 			
 		});
-		
-		
+	
 	}
+	
 }

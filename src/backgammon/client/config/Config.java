@@ -4,8 +4,8 @@ import java.awt.Color;
 
 public class Config {
 	public enum Side {
-		white (Color.orange),
-		black (Color.black);
+		white (Color.green),
+		black (Color.blue);
 
 		public final Color color;
 		
@@ -18,15 +18,7 @@ public class Config {
 		}
 		
 		public static Color enumToColor(Side side) {
-			if (side == white) {
-				return Color.orange;
-			}
-			
-			if (side == black) {
-				return Color.blue;
-			}
-			
-			return null;
+			return side.getColor();
 		}
 	}
 }

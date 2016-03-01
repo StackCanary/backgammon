@@ -13,20 +13,23 @@ import javax.swing.JComponent;
 import backgammon.client.config.Config.Side;
 
 public class Triangle extends JComponent{
+	private static final long serialVersionUID = 1L;
+
 	private int i = 0;
 	private int counters = 0;
+	private boolean predictedHighlighted = false;
+	private boolean headHighlighted = false;
 	public Side side;
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	public Triangle(int i) {
 		this.i = i;
-		this.side = Side.black;
-		highlight(3);
+		this.side = Side.white;
+	}
+	
+	
+	public Triangle(int i, Side side) {
+		this.i = i;
+		this.side = side;
 	}
 	
 	@Override
@@ -39,7 +42,7 @@ public class Triangle extends JComponent{
 			g.setColor(Color.ORANGE);
 		}
 		
-		boolean flip = i > 12;
+		boolean flip = i < 13;
 		
 		int[] x_points = {0, getWidth() / 2, getWidth()};
 		int[] y_points = {flip ? getHeight() : 0, flip ? 0 : getHeight() , flip? getHeight() : 0};
@@ -47,7 +50,12 @@ public class Triangle extends JComponent{
 
 	}
 	
+	public void empty() {
+		removeAll();
+	}
+	
 	public void drawCircles(int n) {
+		empty();
 		GridBagConstraints gbc = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		
@@ -73,10 +81,10 @@ public class Triangle extends JComponent{
 		
 		for (int i = 0; i < n; i++) {
 			gbc.gridx = 1;
-			gbc.gridy = i;
+			gbc.gridy = 5 - i;
 			
 			if (this.i >= 13 && this.i <= 24) {
-				gbc.gridy = 5 - i;
+				gbc.gridy = i;
 			}
 			
 			gbc.weightx = 3;
@@ -92,11 +100,11 @@ public class Triangle extends JComponent{
 		
 		for (int i = n; i < 5; i++) {
 			gbc.gridx = 1;
-			gbc.gridy = i;
+			gbc.gridy = 5 - i;
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (this.i >= 13 && this.i <= 24) {
-				gbc.gridy = 5 - i;
+				gbc.gridy = i;
 			}
 			gbc.weightx = 3;
 			gbc.weighty = 1;
@@ -105,7 +113,7 @@ public class Triangle extends JComponent{
 		
 	}
 	
-	public void highlight(int n) {
+	private void highlight(int n) {
 		drawCircles(n);
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -127,8 +135,19 @@ public class Triangle extends JComponent{
 		add(new EmptyCircle(true), gbc);
 	}
 	
-	public void drawInitialboard() {
-		
+	public void highlightNext() {
+		highlight(this.counters);
+		this.predictedHighlighted = true;
+	}
+	
+	public void unhighlight() {
+		drawCircles(this.counters);
+		this.predictedHighlighted = false;
+	}
+	
+	public void changeSide(Side side) {
+		this.side = side;
+		repaint();
 	}
 	
 	public void add() {
@@ -136,7 +155,7 @@ public class Triangle extends JComponent{
 	}
 	
 	public void remove() {
-		drawCircles(this.counters);
+		drawCircles(this.counters - 1);
 	}
 	
 }
