@@ -14,6 +14,9 @@ public class TriangleController {
 	public TriangleController(ArrayList<Triangle> triangles) {
 		this.triangles = triangles;
 		drawInitBoard();
+		
+		
+		
 	}
 	
 	public Triangle getTriangle(int n) {
@@ -34,19 +37,20 @@ public class TriangleController {
 		drawNCountersAtTriangleT(24, 2, Side.white);
 	}
 	
-	public void drawNCountersAtTriangleT(int t, int n) {
+	public void drawNCountersAtTriangleT(int t, int n) { // method to draw certain number of circle to a triangle
 		Triangle triangle = getTriangle(t);
 		triangle.drawCircles(n);
 	}
 	
-	public void drawNCountersAtTriangleT(int t, int n, Side side) {
+	public void drawNCountersAtTriangleT(int t, int n, Side side) {  // specify color
 		Triangle triangle = getTriangle(t);
 		triangle.changeSide(side);
 		triangle.drawCircles(n);
 	}
 	
+	
 	public void addCounter(int t) {
-		getTriangle(t).add();
+		getTriangle(t).add();         // adds a circle
 	}
 	
 	public void removeCounter(int  t) {
