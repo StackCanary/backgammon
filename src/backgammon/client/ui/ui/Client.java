@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import backgammon.client.ui.shape.TriangleController;
+import backgammon.client.control.TriangleController;
 
 public class Client extends JFrame {
 	public BoardView gameview;
