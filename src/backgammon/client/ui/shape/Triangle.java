@@ -18,7 +18,7 @@ public class Triangle extends JComponent{
 	private int i = 0;
 	private int counters = 0;
 	private boolean predictedHighlighted = false;
-	private boolean headHighlighted = false;
+	private HeadCircle head;
 	public Side side;
 	
 	public Triangle(int i) {
@@ -52,6 +52,10 @@ public class Triangle extends JComponent{
 	
 	public void empty() {
 		removeAll();
+	}
+	
+	public boolean isHeadClicked() {
+		return head.clicked;
 	}
 	
 	public void drawCircles(int n) {
@@ -92,7 +96,7 @@ public class Triangle extends JComponent{
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (i == (n - 1)) {
-				add (new HeadCircle(this.side), gbc);
+				add (head = new HeadCircle(this.side), gbc);
 			} else {
 				add(new Circle(this.side), gbc);
 			}

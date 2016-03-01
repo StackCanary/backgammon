@@ -1,10 +1,11 @@
-package backgammon.client.ui.shape;
+package backgammon.client.control;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config.Side;
+import backgammon.client.ui.shape.Triangle;
 
 public class TriangleController {
 	

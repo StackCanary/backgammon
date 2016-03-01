@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import backgammon.client.control.TriangleController;
 import backgammon.client.ui.shape.JDummy;
 import backgammon.client.ui.shape.Triangle;
-import backgammon.client.ui.shape.TriangleController;
 
 
 //http://stackoverflow.com/questions/1466240/
@@ -45,8 +45,7 @@ public class BoardView extends JComponent {
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
 			add(triangle, gbc);
-			
-			System.out.println(gbc.gridx + ":" + gbc.gridy);
+
 			triangles.add(triangle);
 		}
 		

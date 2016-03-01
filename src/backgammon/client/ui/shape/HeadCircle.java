@@ -12,7 +12,7 @@ import backgammon.client.config.Config.Side;
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
 
-	private boolean clicked = false; 
+	public boolean clicked = false; 
 	
 	public HeadCircle(Side side) {
 		super(side);
