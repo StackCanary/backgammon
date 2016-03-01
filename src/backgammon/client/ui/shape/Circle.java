@@ -13,74 +13,31 @@ import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config;
 
-public class Circle extends JComponent implements MouseListener {
-	private Color myColor;
+public class Circle extends JComponent {
+	protected Color myColor;
+	protected Color save;
 	
-	private boolean top = false;
-	
-	private boolean pressed = false;
-	private boolean released = false;
-	private boolean clicked = false; 
-
 	private static final long serialVersionUID = 1L;
 	
 	public Circle(Config.Side side) {
 			
-		this.myColor = Config.Side.enumToColor(side);
+		this.myColor = this.save = Config.Side.enumToColor(side);
 		
-		enableInputMethods(true);   
-		addMouseListener(this);
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.setColor(myColor);
+		drawCircle(g);
+	}
+	
+	public void drawCircle(Graphics g) {
 		int w = getWidth();
 		int h = getHeight();
-		
-		
-		if (pressed) { 
-			
-		} else {
-			
-		}
-		
-		g.setColor(myColor);
-			
-		
 		
 		boolean result = w > h;
 		g.fillOval(0, 0, result ? h : w , result ? h : w);
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		pressed = clicked;
-		JOptionPane.showMessageDialog(this, "hi");
-		repaint();
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		pressed = clicked;
-		repaint();
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		pressed = clicked;
-		repaint();
-	}
 
 }

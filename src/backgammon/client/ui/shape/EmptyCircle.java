@@ -11,7 +11,11 @@ import javax.swing.JOptionPane;
 
 public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean highlight = false;
-
+	private boolean top = false;
+	private boolean pressed = false;
+	private boolean released = false;
+	private boolean clicked = false; 
+	
 	public EmptyCircle() {
 
 		enableInputMethods(true);   
@@ -20,7 +24,6 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	
 	public EmptyCircle(boolean higlight) {
 		this();
-		
 		this.highlight = higlight;
 	}
 	
@@ -57,6 +60,11 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		if (!highlight) {
+			return;
+		}
+		
+		JOptionPane.showMessageDialog(this, "hi");
 		
 	}
 

@@ -26,7 +26,7 @@ public class Triangle extends JComponent{
 	public Triangle(int i) {
 		this.i = i;
 		this.side = Side.black;
-		highlight(4);
+		highlight(3);
 	}
 	
 	@Override
@@ -82,7 +82,12 @@ public class Triangle extends JComponent{
 			gbc.weightx = 3;
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
-			add(new Circle(this.side), gbc);
+			
+			if (i == (n - 1)) {
+				add (new HeadCircle(this.side), gbc);
+			} else {
+				add(new Circle(this.side), gbc);
+			}
 		}
 		
 		for (int i = n; i < 5; i++) {
