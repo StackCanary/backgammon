@@ -36,6 +36,12 @@ public class Client extends JFrame {
 		gameview = board;
 		getContentPane().add(board, BorderLayout.CENTER);
 		pack();
+		
+		DiceDraw dice = new DiceDraw();
+		
+		add(dice);
+		
+		
 	}
 	
 	public static void menu() {
