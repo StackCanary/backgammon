@@ -19,6 +19,7 @@ public class Triangle extends JComponent{
 	private int counters = 0;
 	private boolean predictedHighlighted = false;
 	private HeadCircle head;
+	private Circle replaceableCircle;
 	public Side side;
 	
 	public Triangle(int i) {
@@ -65,7 +66,6 @@ public class Triangle extends JComponent{
 		
 		if (n > 5) {
 			System.out.println("N is greater than 5 in Triangle");
-			return;
 		}
 		
 		this.counters = n;
@@ -82,12 +82,15 @@ public class Triangle extends JComponent{
 		gbc.weightx = 1;
 		add(spacer, gbc);
 		
+		boolean flag = n > 5;
+		boolean top = this.i >= 13 && this.i <= 24;
+	
 		
-		for (int i = 0; i < n; i++) {
+		for (int i = flag ? 1 : 0 ; i < (flag ? 5 : n) ; i++) {
 			gbc.gridx = 1;
 			gbc.gridy = 5 - i;
 			
-			if (this.i >= 13 && this.i <= 24) {
+			if (top) {
 				gbc.gridy = i;
 			}
 			
@@ -95,19 +98,35 @@ public class Triangle extends JComponent{
 			gbc.weighty = 1;
 			gbc.fill = GridBagConstraints.BOTH;
 			
-			if (i == (n - 1)) {
+			if (i == (flag ? 5 : (n - 1 ))) {
 				add (head = new HeadCircle(this.side), gbc);
 			} else {
-				add(new Circle(this.side), gbc);
+				add(replaceableCircle = new Circle(this.side), gbc);
 			}
+			
 		}
 		
+		
+		if(flag) {
+			if (top) {
+				gbc.gridx = 1;
+				gbc.gridy = 0;
+			} else {
+				gbc.gridx = 1;
+				gbc.gridy = 5;
+			}
+			
+			gbc.weightx = 3;
+			gbc.weighty = 1;
+			add(new StackedCircle(this.side, n - 5), gbc);
+		}
+				
 		for (int i = n; i < 5; i++) {
 			gbc.gridx = 1;
 			gbc.gridy = 5 - i;
 			gbc.fill = GridBagConstraints.BOTH;
 			
-			if (this.i >= 13 && this.i <= 24) {
+			if (top) {
 				gbc.gridy = i;
 			}
 			gbc.weightx = 3;
@@ -118,25 +137,43 @@ public class Triangle extends JComponent{
 	}
 	
 	private void highlight(int n) {
-		drawCircles(n);
 		GridBagConstraints gbc = new GridBagConstraints();
-		
-		if (n > 4) {
-			System.out.println("N is greater than 4 in Triangle");
-			return;
-		}
+		boolean flag = n > 4;
+		boolean bottom = this.i >= 1 && this.i <= 12;
 		
 		gbc.gridx = 1;
 		gbc.gridy = n;
+		
+		if (flag) {
+			drawCircles(n + 1);
+			gbc.gridy = 4;
+			
+		} else{
+			drawCircles(n);
+		}
+		
+		if (n > 4) {
+			System.out.println("N is greater than 4 in Triangle");
+		}
+		
 		gbc.fill = GridBagConstraints.BOTH;
 		
-		if (this.i >= 13 && this.i <= 24) {
+		if (bottom) {
 			gbc.gridy = 5 - n;
 		}
 		
-		gbc.weightx = 1;
+		gbc.weightx = 3;
 		gbc.weighty = 1;
-		add(new EmptyCircle(true), gbc);
+		
+		if (flag) {
+			GridBagLayout layout = (GridBagLayout)getLayout();
+			GridBagConstraints headGbc = layout.getConstraints(replaceableCircle);
+			remove(replaceableCircle);
+			add(new EmptyCircle(true), headGbc);
+		} else {
+			add(new EmptyCircle(true), gbc);
+		}
+		
 	}
 	
 	public void highlightNext() {
@@ -148,9 +185,18 @@ public class Triangle extends JComponent{
 		drawCircles(this.counters);
 		this.predictedHighlighted = false;
 	}
+
+	public Side getSide() {
+		return side;
+	}
 	
 	public void changeSide(Side side) {
 		this.side = side;
+		repaint();
+	}
+	
+	public void changeSide() {
+		this.side = (this.side == Side.black) ? Side.white : Side.black;
 		repaint();
 	}
 	

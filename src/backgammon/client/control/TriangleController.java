@@ -24,7 +24,7 @@ public class TriangleController {
 		drawNCountersAtTriangleT(1, 2, Side.black);
 		drawNCountersAtTriangleT(6, 5, Side.white);
 		
-		drawNCountersAtTriangleT(7, 3, Side.white);
+		drawNCountersAtTriangleT(8, 3, Side.white);
 		drawNCountersAtTriangleT(12, 5, Side.black);
 		
 		drawNCountersAtTriangleT(13, 5, Side.white);
@@ -32,6 +32,7 @@ public class TriangleController {
 		
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
+		
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) { // method to draw certain number of circle to a triangle
