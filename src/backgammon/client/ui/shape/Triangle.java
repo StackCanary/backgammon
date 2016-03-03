@@ -19,6 +19,7 @@ public class Triangle extends JComponent{
 	private int counters = 0;
 	private boolean predictedHighlighted = false;
 	private HeadCircle head;
+	private Circle replaceableCircle;
 	public Side side;
 	
 	public Triangle(int i) {
@@ -100,7 +101,7 @@ public class Triangle extends JComponent{
 			if (i == (flag ? 5 : (n - 1 ))) {
 				add (head = new HeadCircle(this.side), gbc);
 			} else {
-				add(new Circle(this.side), gbc);
+				add(replaceableCircle = new Circle(this.side), gbc);
 			}
 			
 		}
@@ -137,27 +138,41 @@ public class Triangle extends JComponent{
 	
 	private void highlight(int n) {
 		GridBagConstraints gbc = new GridBagConstraints();
-		drawCircles(n);
-		
-		if (n > 4) {
-			System.out.println("N is greater than 4 in Triangle");
-			return;
-		}
-		
-		boolean flag = n > 5;
-		boolean top = this.i >= 1 && this.i <= 12;
+		boolean flag = n > 4;
+		boolean bottom = this.i >= 1 && this.i <= 12;
 		
 		gbc.gridx = 1;
 		gbc.gridy = n;
+		
+		if (flag) {
+			drawCircles(n + 1);
+			gbc.gridy = 4;
+			
+		} else{
+			drawCircles(n);
+		}
+		
+		if (n > 4) {
+			System.out.println("N is greater than 4 in Triangle");
+		}
+		
 		gbc.fill = GridBagConstraints.BOTH;
 		
-		if (top) {
+		if (bottom) {
 			gbc.gridy = 5 - n;
 		}
 		
 		gbc.weightx = 3;
 		gbc.weighty = 1;
-		add(new EmptyCircle(true), gbc);
+		
+		if (flag) {
+			GridBagLayout layout = (GridBagLayout)getLayout();
+			GridBagConstraints headGbc = layout.getConstraints(replaceableCircle);
+			remove(replaceableCircle);
+			add(new EmptyCircle(true), headGbc);
+		} else {
+			add(new EmptyCircle(true), gbc);
+		}
 		
 	}
 	
