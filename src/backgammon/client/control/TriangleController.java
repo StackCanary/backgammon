@@ -33,6 +33,9 @@ public class TriangleController {
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
 		
+		drawNCountersAtTriangleT(1, 7, Side.white);
+		highlightCounter(1);
+		
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) {
