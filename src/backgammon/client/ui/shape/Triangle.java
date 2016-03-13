@@ -99,7 +99,7 @@ public class Triangle extends JComponent{
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (i == (flag ? 5 : (n - 1 ))) {
-				add (head = new HeadCircle(this.side), gbc);
+				add (head = new HeadCircle(this.side, this.i), gbc);
 			} else {
 				add(replaceableCircle = new Circle(this.side), gbc);
 			}
@@ -118,7 +118,7 @@ public class Triangle extends JComponent{
 			
 			gbc.weightx = 3;
 			gbc.weighty = 1;
-			add(new StackedCircle(this.side, n - 5), gbc);
+			add(new StackedCircle(this.side, n - 4), gbc);
 		}
 				
 		for (int i = n; i < 5; i++) {
@@ -169,9 +169,9 @@ public class Triangle extends JComponent{
 			GridBagLayout layout = (GridBagLayout)getLayout();
 			GridBagConstraints headGbc = layout.getConstraints(replaceableCircle);
 			remove(replaceableCircle);
-			add(new EmptyCircle(true), headGbc);
+			add(new EmptyCircle(true, this.i), headGbc);
 		} else {
-			add(new EmptyCircle(true), gbc);
+			add(new EmptyCircle(true, this.i), gbc);
 		}
 		
 	}

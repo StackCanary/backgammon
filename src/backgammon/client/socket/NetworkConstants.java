@@ -3,7 +3,7 @@ package backgammon.client.socket;
 import java.awt.Color;
 
 
-public class Constants {
+public class NetworkConstants {
 	
 		public enum ClientProtocol {
 			hello ("hello"),

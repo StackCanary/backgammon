@@ -1,6 +1,7 @@
 package backgammon.client.ui.shape;
 
 import java.awt.Color;
+import java.util.Observable;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,12 +12,13 @@ import backgammon.client.config.Config.Side;
 
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
-
+	public int n;
 	public boolean clicked = false; 
 	
-	public HeadCircle(Side side) {
+	public HeadCircle(Side side, int n) {
 		super(side);
 		
+		this.n = n;
 		enableInputMethods(true);   
 		addMouseListener(this);
 	}

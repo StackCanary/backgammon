@@ -16,15 +16,18 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean released = false;
 	private boolean clicked = false; 
 	
+	public int n;
+	
 	public EmptyCircle() {
 
 		enableInputMethods(true);   
 		addMouseListener(this);
 	}
 	
-	public EmptyCircle(boolean higlight) {
+	public EmptyCircle(boolean higlight, int n) {
 		this();
 		this.highlight = higlight;
+		this.n = n;
 	}
 	
 	public void paintComponent(Graphics g) {
