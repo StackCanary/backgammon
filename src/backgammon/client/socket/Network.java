@@ -14,10 +14,12 @@ public class Network {
 	OutputStream outputStream;
 	InputStream inputStream;
 	
-	public final String host = "localhost";
-	public final int port = 3713;
+	public String host;
+	public int port;
 	
-	public Network() {
+	public Network(String host, int port) {
+		this.host = host;
+		this.port = port;
 		try {
 			socket = new Socket(host, port);
 			outputStream = socket.getOutputStream();
@@ -26,7 +28,10 @@ public class Network {
 		} catch (IOException e) {
 			System.out.println("Perhaps the host is down");
 		}
-		
+	}
+	
+	public Network() {
+		this("localhost", 3713);
 	}
 	
 	public void sendMessage(String message) {
