@@ -5,7 +5,8 @@ import java.awt.Color;
 public class Config {
 	public enum Side {
 		white (Color.green),
-		black (Color.blue);
+		black (Color.blue),
+		chance (Color.cyan);
 
 		public final Color color;
 		

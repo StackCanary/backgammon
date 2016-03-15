@@ -14,6 +14,9 @@ public class TriangleController {
 	public TriangleController(ArrayList<Triangle> triangles) {
 		this.triangles = triangles;
 		drawInitBoard();
+		
+		// Pass self to game controller
+		GameController controller = new GameController(this);
 	}
 	
 	public Triangle getTriangle(int n) {
@@ -32,6 +35,7 @@ public class TriangleController {
 		
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
+		
 		
 	}
 	
