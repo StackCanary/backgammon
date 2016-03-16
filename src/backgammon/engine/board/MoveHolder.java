@@ -1,6 +1,6 @@
-package backgammon.client.ui.ui;
+package backgammon.engine.board;
 
-public class DiceRoll {
+public class MoveHolder {
 	
 	public int pos1;
 	public int end1;
@@ -17,7 +17,7 @@ public class DiceRoll {
 	public boolean doubleRoll = false;
 	
 	
-	public DiceRoll(int pos1, int end1, int pos2, int end2) {
+	public MoveHolder(int pos1, int end1, int pos2, int end2) {
 		this.pos1 = pos1;
 		this.end1 = end1;
 		this.pos2 = pos2;
@@ -25,7 +25,7 @@ public class DiceRoll {
 	}
 	
 	
-	public DiceRoll(int pos1, int end1, int pos2, int end2, int pos3, int end3, int pos4, int end4) {
+	public MoveHolder(int pos1, int end1, int pos2, int end2, int pos3, int end3, int pos4, int end4) {
 		this.pos1 = pos1;
 		this.end1 = end1;
 		this.pos2 = pos2;

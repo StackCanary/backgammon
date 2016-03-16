@@ -2,7 +2,7 @@ package backgammon.client.socket;
 
 import java.awt.Color;
 
-import backgammon.client.ui.ui.DiceRoll;
+import backgammon.engine.board.MoveHolder;
 
 
 public class NetworkConstants {
@@ -23,7 +23,7 @@ public class NetworkConstants {
 				return this.message;
 			}
 			
-			public static String diceMessage(DiceRoll roll) {
+			public static String diceMessage(MoveHolder roll) {
 				return diceMessage.getMessage() + roll.getMessage();
 			}
 			
