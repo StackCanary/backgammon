@@ -10,6 +10,8 @@ public class Board {
 	List<Triangle> triangles = new ArrayList<Triangle>();
 	List<Triangle> save;
 	Side turn = Side.black;
+	boolean capture = false;
+	boolean legal = false;
 	
 	public Board() {
 		setBoard();
@@ -69,6 +71,7 @@ public class Board {
 	 */
 	public boolean canMove(int from, int to) {
 		boolean left = (this.turn == Side.black);
+		
 		if (left) {
 			if (from > to) {
 				return false;
@@ -84,7 +87,7 @@ public class Board {
 			Triangle fromTriangle = getTriangle(from);
 			Triangle toTriangle = getTriangle(to);
 			
-			if (fromTriangle.side != toTriangle.side) {
+			if (isCapture(from, to)) {
 				if (toTriangle.count > 1) {
 					return false;
 				} 
@@ -95,6 +98,40 @@ public class Board {
 		
 		
 		return true;
+	}
+	
+	public boolean isCapture(int from, int to) {
+		return (getTriangle(from).side != getTriangle(to).side);
+	}
+	
+	public boolean move(int from, int to) {
+		legal = canMove(from, to);
+		capture = isCapture(from, to);
+		
+		if (legal) {
+			if (capture) {
+				capture(to);
+				remove(from);
+			} else {
+				add(to);
+				remove(from);
+			}
+		}
+		
+		return legal;
+	}
+	
+	public void capture(int to) {
+		getTriangle(to).switchSide();
+		add(to);
+	}
+	
+	public void add(int to) {
+		getTriangle(to).count++;
+	}
+	
+	public void remove(int to) {
+		getTriangle(to).count--;
 	}
 	
 
