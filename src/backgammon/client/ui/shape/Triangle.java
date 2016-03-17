@@ -11,11 +11,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.board.TriangleInterface;
 
-public class Triangle extends JComponent{
+public class Triangle extends JComponent implements TriangleInterface {
 	private static final long serialVersionUID = 1L;
 
-	private int i = 0;
+	private int n = 0;
 	private int counters = 0;
 	private boolean predictedHighlighted = false;
 	private HeadCircle head;
@@ -23,13 +24,13 @@ public class Triangle extends JComponent{
 	public Side side;
 	
 	public Triangle(int i) {
-		this.i = i;
+		this.n = i;
 		this.side = Side.white;
 	}
 	
 	
 	public Triangle(int i, Side side) {
-		this.i = i;
+		this.n = i;
 		this.side = side;
 	}
 	
@@ -37,13 +38,13 @@ public class Triangle extends JComponent{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		if (i % 2 == 0) {
+		if (n % 2 == 0) {
 			g.setColor(Color.BLACK);
 		} else {
 			g.setColor(Color.ORANGE);
 		}
 		
-		boolean flip = i < 13;
+		boolean flip = n < 13;
 		
 		int[] x_points = {0, getWidth() / 2, getWidth()};
 		int[] y_points = {flip ? getHeight() : 0, flip ? 0 : getHeight() , flip? getHeight() : 0};
@@ -83,7 +84,7 @@ public class Triangle extends JComponent{
 		add(spacer, gbc);
 		
 		boolean flag = n > 5;
-		boolean top = this.i >= 13 && this.i <= 24;
+		boolean top = this.n >= 13 && this.n <= 24;
 	
 		
 		for (int i = flag ? 1 : 0 ; i < (flag ? 5 : n) ; i++) {
@@ -99,7 +100,7 @@ public class Triangle extends JComponent{
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (i == (flag ? 5 : (n - 1 ))) {
-				add (head = new HeadCircle(this.side, this.i), gbc);
+				add (head = new HeadCircle(this.side, this.n), gbc);
 			} else {
 				add(replaceableCircle = new Circle(this.side), gbc);
 			}
@@ -139,7 +140,7 @@ public class Triangle extends JComponent{
 	private void highlight(int n) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		boolean flag = n > 4;
-		boolean bottom = this.i >= 1 && this.i <= 12;
+		boolean bottom = this.n >= 1 && this.n <= 12;
 		
 		gbc.gridx = 1;
 		gbc.gridy = n;
@@ -169,9 +170,9 @@ public class Triangle extends JComponent{
 			GridBagLayout layout = (GridBagLayout)getLayout();
 			GridBagConstraints headGbc = layout.getConstraints(replaceableCircle);
 			remove(replaceableCircle);
-			add(new EmptyCircle(true, this.i), headGbc);
+			add(new EmptyCircle(true, this.n), headGbc);
 		} else {
-			add(new EmptyCircle(true, this.i), gbc);
+			add(new EmptyCircle(true, this.n), gbc);
 		}
 		
 	}
@@ -190,12 +191,12 @@ public class Triangle extends JComponent{
 		return side;
 	}
 	
-	public void changeSide(Side side) {
+	public void setSide(Side side) {
 		this.side = side;
 		repaint();
 	}
 	
-	public void changeSide() {
+	public void switchSide() {
 		this.side = (this.side == Side.black) ? Side.white : Side.black;
 		repaint();
 	}
@@ -207,5 +208,29 @@ public class Triangle extends JComponent{
 	public void remove() {
 		drawCircles(this.counters - 1);
 	}
-	
+
+
+	@Override
+	public void setN(int n) {
+		this.n = n;
+	}
+
+
+	@Override
+	public int getN() {
+		return n;
+	}
+
+
+	@Override
+	public void setCount(int count) {
+		this.counters = count;
+	}
+
+
+	@Override
+	public int getCount() {
+		return counters;
+	}
+
 }

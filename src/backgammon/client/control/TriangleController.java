@@ -1,25 +1,32 @@
 package backgammon.client.control;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config.Side;
 import backgammon.client.ui.shape.Triangle;
+import backgammon.engine.board.BasicBoard;
+import backgammon.engine.board.BoardInterface;
+import backgammon.engine.board.DiceRollHolder;
+import backgammon.engine.board.TriangleInterface;
 
-public class TriangleController {
+public class TriangleController implements BoardInterface{
 	
-	private ArrayList<Triangle> triangles;
+	private List<TriangleInterface> triangles;
+	private BasicBoard board;
 	
-	public TriangleController(ArrayList<Triangle> triangles) {
-		this.triangles = triangles;
+	public TriangleController(List<Triangle> triangles) {
+		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
 		drawInitBoard();
-		
+		board = new BasicBoard(this.triangles, Side.black);
 		// Pass self to game controller
 		GameController controller = new GameController(this);
 	}
 	
-	public Triangle getTriangle(int n) {
+	public TriangleInterface getTriangle(int n) {
 		return triangles.get(n - 1);
 	}
 	
@@ -40,32 +47,61 @@ public class TriangleController {
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) {
-		Triangle triangle = getTriangle(t);
-		triangle.drawCircles(n);
+		TriangleInterface triangle = getTriangle(t);
+		((Triangle) triangle).drawCircles(n);
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n, Side side) {
-		Triangle triangle = getTriangle(t);
-		triangle.changeSide(side);
-		triangle.drawCircles(n);
+		TriangleInterface triangle = getTriangle(t);
+		triangle.setSide(side);
+		((Triangle) triangle).drawCircles(n);
 	}
 	
-	public void addCounter(int t) {
+	public void add(int t) {
 		getTriangle(t).add();
 	}
 	
-	public void removeCounter(int  t) {
+	public void remove(int  t) {
 		getTriangle(t).remove();
 	}
 	
 	public void highlightCounter(int t) {
-		getTriangle(t).highlightNext(); 
+		((Triangle )getTriangle(t)).highlightNext(); 
 	}
 	
 	public void unhighlightCounter(int t) {
-		getTriangle(t).unhighlight();
+		((Triangle )getTriangle(t)).unhighlight();
 	}
 
-	
+	@Override
+	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean move(int from, int to) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void capture(int to) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void bearOff(int from) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<TriangleInterface> getTriangles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

@@ -6,20 +6,24 @@ import java.util.List;
 
 import backgammon.client.config.Config.Side;
 
-public class Board {
-	List<Triangle> triangles = new ArrayList<Triangle>();
-	List<Triangle> save;
+public class BasicBoard implements BoardInterface {
+	List<TriangleInterface> triangles = new ArrayList<TriangleInterface>();
+	List<TriangleInterface> save;
 	Side turn = Side.black;
 	boolean capture = false;
 	boolean legal = false;
 	
-	public Board() {
+	Legal theLaw;
+	
+	public BasicBoard() {
 		setBoard();
+		theLaw = new Legal(this);
 	}
 	
-	public Board(List<Triangle> triangles, Side turn) {
+	public BasicBoard(List<TriangleInterface> triangles, Side turn) {
 		this.triangles = triangles;
 		this.turn = turn;
+		theLaw = new Legal(this);
 	}
 	
 	public void setBoard() {
@@ -41,12 +45,14 @@ public class Board {
 		
 	}
 	
-	private void drawNCountersAtTriangleT(int n, int i, Side side) {
-		Triangle triangle = getTriangle(n);
+	@Override
+	public void drawNCountersAtTriangleT(int n, int i, Side side) {
+		TriangleInterface triangle = getTriangle(n);
 		triangle.setCount(i);
 		triangle.setSide(side);
 	}
 	
+	@Override
 	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
 		
 		Iterator<Integer> iterator = roll.options.iterator();
@@ -54,7 +60,7 @@ public class Board {
 		boolean left = (this.turn == Side.black);
 		while(iterator.hasNext()) {
 			int move = iterator.next();
-			boolean isLegal = canMove(triangle, triangle + (left ? move : - move));
+			boolean isLegal = theLaw.canMove(triangle, triangle + (left ? move : - move));
 			if (isLegal) {
 				legalMoveList.add(move);
 			} 
@@ -62,51 +68,10 @@ public class Board {
 		
 		return legalMoveList;
 	}
-	
-	/**
-	 * No support for bearing off yet
-	 * @param from
-	 * @param to
-	 * @return
-	 */
-	public boolean canMove(int from, int to) {
-		boolean left = (this.turn == Side.black);
-		
-		if (left) {
-			if (from > to) {
-				return false;
-			}
-		} else {
-			if (from < to) {
-				System.out.println("False");
-				return false;
-			}
-		}
-		
-		try {
-			Triangle fromTriangle = getTriangle(from);
-			Triangle toTriangle = getTriangle(to);
-			
-			if (isCapture(from, to)) {
-				if (toTriangle.count > 1) {
-					return false;
-				} 
-			}
-		} catch (IndexOutOfBoundsException e) {
-			return false;
-		}
-		
-		
-		return true;
-	}
-	
-	public boolean isCapture(int from, int to) {
-		return (getTriangle(from).side != getTriangle(to).side);
-	}
-	
+	@Override
 	public boolean move(int from, int to) {
-		legal = canMove(from, to);
-		capture = isCapture(from, to);
+		legal = theLaw.canMove(from, to);
+		capture = theLaw.isCapture(from, to);
 		
 		if (legal) {
 			if (capture) {
@@ -121,21 +86,36 @@ public class Board {
 		return legal;
 	}
 	
-	public void capture(int to) {
-		getTriangle(to).switchSide();
-		add(to);
+	@Override
+	public void capture(int triangle) {
+		getTriangle(triangle).switchSide();
+		add(triangle);
 	}
 	
-	public void add(int to) {
-		getTriangle(to).count++;
+	@Override
+	public void bearOff(int from) {
+		// TODO Auto-generated method stub
+		
 	}
 	
-	public void remove(int to) {
-		getTriangle(to).count--;
+	@Override
+	public void add(int triangle) {
+		getTriangle(triangle).setCount(getTriangle(triangle).getCount() + 1);
+	}
+	
+	@Override
+	public void remove(int triangle) {
+		getTriangle(triangle).setCount(getTriangle(triangle).getCount() - 1);
+	}
+	
+	@Override
+	public List<TriangleInterface> getTriangles() {
+		return this.triangles;
 	}
 	
 
-	public Triangle getTriangle(int n) {
+	@Override
+	public TriangleInterface getTriangle(int n) {
 		return triangles.get(n - 1);
 	}
  	
@@ -144,7 +124,7 @@ public class Board {
 	}
 	
 	public static void main(String[] args) {
-		Board board = new Board();
+		BasicBoard board = new BasicBoard();
 //		for (Triangle triangle : board.triangles) {
 //			System.out.println(triangle.count);
 //		}
@@ -152,4 +132,6 @@ public class Board {
 		List<Integer> moves = board.getPossibleMoves(1, new DiceRollHolder(4, 5));
 		System.out.println(moves);
 	}
+
+
 }

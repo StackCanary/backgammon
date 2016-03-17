@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -13,13 +14,14 @@ import javax.swing.JOptionPane;
 import backgammon.client.control.TriangleController;
 import backgammon.client.ui.shape.JDummy;
 import backgammon.client.ui.shape.Triangle;
+import backgammon.engine.board.TriangleInterface;
 
 
 //http://stackoverflow.com/questions/1466240/
 public class BoardView extends JComponent {
 	private static final long serialVersionUID = 1L;
 	public TriangleController triangleController;
-	public ArrayList<Triangle> triangles = new ArrayList<Triangle>();
+	public List<Triangle> triangles = new ArrayList<Triangle>();
 	
 	public BoardView() {
 		setBackground(Color.red);
