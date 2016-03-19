@@ -42,6 +42,8 @@ public class TriangleController implements BoardInterface{
 		
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
+		
+		
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) {
@@ -56,13 +58,11 @@ public class TriangleController implements BoardInterface{
 	}
 	
 	public void add(int t) {
-		board.add(t);
-		drawNCountersAtTriangleT(t, board.getTriangle(t).getCount());
+		getTriangle(t).add();
 	}
 	
-	public void remove(int t) {
-		board.remove(t);
-		drawNCountersAtTriangleT(t, board.getTriangle(t).getCount());
+	public void remove(int  t) {
+		getTriangle(t).remove();
 	}
 	
 	public void highlightCounter(int t) {
@@ -75,33 +75,32 @@ public class TriangleController implements BoardInterface{
 
 	@Override
 	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
-		return board.getPossibleMoves(triangle, roll);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean move(int from, int to) {
-		boolean result = board.move(from, to);
-		drawNCountersAtTriangleT(from, board.getTriangle(from).getCount());
-		drawNCountersAtTriangleT(to, board.getTriangle(to).getCount());
-		
-		return result;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public void capture(int triangle) {
-		board.capture(triangle);
-		drawNCountersAtTriangleT(triangle, board.getTriangle(triangle).getCount());
+	public void capture(int to) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void bearOff(int from) {
-		board.bearOff(from);
-		drawNCountersAtTriangleT(from, board.getTriangle(from).getCount());
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public List<TriangleInterface> getTriangles() {
-		return board.getTriangles();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
