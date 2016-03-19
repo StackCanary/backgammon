@@ -29,7 +29,7 @@ public class BoardView extends JComponent {
 		
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {
-			Triangle triangle = new Triangle(i);
+			Triangle triangle = new Triangle(i, triangleController);
 			gbc = new GridBagConstraints();
 			gbc.gridx = 12 - i;
 			gbc.gridy = 2;

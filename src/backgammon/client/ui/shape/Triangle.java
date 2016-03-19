@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import backgammon.client.config.Config.Side;
+import backgammon.client.control.TriangleController;
 import backgammon.engine.board.TriangleInterface;
 
 public class Triangle extends JComponent implements TriangleInterface {
@@ -22,16 +23,19 @@ public class Triangle extends JComponent implements TriangleInterface {
 	private HeadCircle head;
 	private Circle replaceableCircle;
 	public Side side;
+	private TriangleController triangleController;
 	
-	public Triangle(int i) {
+	public Triangle(int i, TriangleController triangleController) {
 		this.n = i;
 		this.side = Side.white;
+		this.triangleController = triangleController;
 	}
 	
 	
-	public Triangle(int i, Side side) {
+	public Triangle(int i, Side side, TriangleController triangleController) {
 		this.n = i;
 		this.side = side;
+		this.triangleController = triangleController;
 	}
 	
 	@Override
@@ -100,7 +104,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (i == (flag ? 5 : (n - 1 ))) {
-				add (head = new HeadCircle(this.side, this.n), gbc);
+				add (head = new HeadCircle(this.side, this.n, triangleController), gbc);
 			} else {
 				add(replaceableCircle = new Circle(this.side), gbc);
 			}
@@ -170,9 +174,9 @@ public class Triangle extends JComponent implements TriangleInterface {
 			GridBagLayout layout = (GridBagLayout)getLayout();
 			GridBagConstraints headGbc = layout.getConstraints(replaceableCircle);
 			remove(replaceableCircle);
-			add(new EmptyCircle(true, this.n), headGbc);
+			add(new EmptyCircle(true, this.n, triangleController), headGbc);
 		} else {
-			add(new EmptyCircle(true, this.n), gbc);
+			add(new EmptyCircle(true, this.n, triangleController), gbc);
 		}
 		
 	}

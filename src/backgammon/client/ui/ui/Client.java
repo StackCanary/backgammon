@@ -22,7 +22,6 @@ public class Client extends JFrame {
 	public Client() {
 		UI();
 	}
-
 	
 	public void UI() {
 		setTitle("Backgammon");

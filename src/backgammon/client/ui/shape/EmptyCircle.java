@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import backgammon.client.control.TriangleController;
+
 public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean highlight = false;
 	private boolean top = false;
@@ -16,6 +18,8 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean released = false;
 	private boolean clicked = false; 
 	
+	
+	private TriangleController triangleController;
 	public int n;
 	
 	public EmptyCircle() {
@@ -24,10 +28,11 @@ public class EmptyCircle extends JComponent implements MouseListener {
 		addMouseListener(this);
 	}
 	
-	public EmptyCircle(boolean higlight, int n) {
+	public EmptyCircle(boolean higlight, int n, TriangleController triangleController) {
 		this();
 		this.highlight = higlight;
 		this.n = n;
+		this.triangleController = triangleController;
 	}
 	
 	public void paintComponent(Graphics g) {

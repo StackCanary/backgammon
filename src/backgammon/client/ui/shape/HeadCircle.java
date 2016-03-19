@@ -9,18 +9,22 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config.Side;
+import backgammon.client.control.TriangleController;
 
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	public int n;
 	public boolean clicked = false; 
+	private TriangleController triangleController;
 	
-	public HeadCircle(Side side, int n) {
+	public HeadCircle(Side side, int n, TriangleController triangleController) {
 		super(side);
 		
 		this.n = n;
 		enableInputMethods(true);   
 		addMouseListener(this);
+		
+		this.triangleController = triangleController;
 	}
 	
 	@Override
