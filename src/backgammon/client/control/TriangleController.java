@@ -3,6 +3,7 @@ package backgammon.client.control;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -31,7 +32,7 @@ public class TriangleController implements BoardInterface{
 		// Pass self to game controller
 	}
 	
-	public void setEvent(ConcurrentLinkedQueue<Event> eventQueue) {
+	public void setEvent(SynchronousQueue<Event> eventQueue) {
 		GameController controller = new GameController(this);
 		controller.dispatchEventThread(eventQueue);
 	}

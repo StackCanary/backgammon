@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -32,7 +33,7 @@ public class BoardView extends JComponent {
 		setLayout(new GridBagLayout());
 		
 		triangleController = new TriangleController();
-		ConcurrentLinkedQueue<Event> eventQueue = new ConcurrentLinkedQueue<Event>();
+		SynchronousQueue<Event> eventQueue = new SynchronousQueue<Event>();
 		
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {

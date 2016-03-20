@@ -3,6 +3,7 @@ package backgammon.client.ui.shape;
 import java.awt.Color;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,9 +19,9 @@ public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	public int n;
 	public boolean clicked = false; 
-	private ConcurrentLinkedQueue<Event> eventQueue;
+	private SynchronousQueue<Event> eventQueue;
 	
-	public HeadCircle(Side side, int n, ConcurrentLinkedQueue<Event> event) {
+	public HeadCircle(Side side, int n, SynchronousQueue<Event> event) {
 		super(side);
 		
 		this.n = n;
@@ -32,7 +33,12 @@ public class HeadCircle extends Circle implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		clicked = true;
-		this.eventQueue.add(new Event(EventT.add, null, this));
+		try {
+			this.eventQueue.put(new Event(EventT.add, null, this));
+		} catch (InterruptedException e) {
+			System.out.println("Something interrupted our queue, :(");
+			e.printStackTrace();
+		}
 		repaint();
 	}
 

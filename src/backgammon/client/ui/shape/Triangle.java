@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -26,16 +27,16 @@ public class Triangle extends JComponent implements TriangleInterface {
 	private HeadCircle head;
 	private Circle replaceableCircle;
 	public Side side;
-	private ConcurrentLinkedQueue<Event> eventQueue;
+	private SynchronousQueue<Event> eventQueue;
 	
-	public Triangle(int i, ConcurrentLinkedQueue<Event> event) {
+	public Triangle(int i, SynchronousQueue<Event> event) {
 		this.n = i;
 		this.side = Side.white;
 		this.eventQueue = event;
 	}
 	
 	
-	public Triangle(int i, Side side, ConcurrentLinkedQueue<Event> event) {
+	public Triangle(int i, Side side, SynchronousQueue<Event> event) {
 		this.n = i;
 		this.side = side;
 		this.eventQueue = event;

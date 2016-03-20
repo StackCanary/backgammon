@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -21,7 +22,7 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean clicked = false; 
 	
 	
-	private ConcurrentLinkedQueue<Event> event;
+	private SynchronousQueue<Event> event;
 	public int n;
 	
 	public EmptyCircle() {
@@ -30,7 +31,7 @@ public class EmptyCircle extends JComponent implements MouseListener {
 		addMouseListener(this);
 	}
 	
-	public EmptyCircle(boolean higlight, int n, ConcurrentLinkedQueue<Event> event) {
+	public EmptyCircle(boolean higlight, int n, SynchronousQueue<Event> event) {
 		this();
 		this.highlight = higlight;
 		this.n = n;

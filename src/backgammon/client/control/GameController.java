@@ -1,9 +1,7 @@
 package backgammon.client.control;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.swing.SwingUtilities;
-import javax.swing.plaf.SliderUI;
+import java.util.concurrent.SynchronousQueue;
 
 import backgammon.client.socket.Network;
 
@@ -24,7 +22,7 @@ public class GameController {
 		this.triangleController = triangleController;
 	}
 	
-	public void dispatchEventThread(ConcurrentLinkedQueue<Event> e) {
+	public void dispatchEventThread(SynchronousQueue<Event> e) {
 		Thread t = new Thread(
 		new Runnable() {
 			
