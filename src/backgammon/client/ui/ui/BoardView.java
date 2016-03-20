@@ -7,10 +7,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import backgammon.client.control.Event;
 import backgammon.client.control.TriangleController;
 import backgammon.client.ui.shape.JDummy;
 import backgammon.client.ui.shape.Triangle;
@@ -28,10 +32,11 @@ public class BoardView extends JComponent {
 		setLayout(new GridBagLayout());
 		
 		triangleController = new TriangleController();
+		ConcurrentLinkedQueue<Event> eventQueue = new ConcurrentLinkedQueue<Event>();
 		
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {
-			Triangle triangle = new Triangle(i, triangleController);
+			Triangle triangle = new Triangle(i, eventQueue);
 			gbc = new GridBagConstraints();
 			gbc.gridx = 12 - i;
 			gbc.gridy = 2;
@@ -54,6 +59,7 @@ public class BoardView extends JComponent {
 		}
 		
 		triangleController.setTriangles(triangles);
+		triangleController.setEvent(eventQueue);
 		triangleController.drawInitBoard();
 		
 		JDummy spacer = new JDummy();

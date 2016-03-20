@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import backgammon.client.control.Event;
 import backgammon.client.control.TriangleController;
 
 public class EmptyCircle extends JComponent implements MouseListener {
@@ -19,7 +21,7 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean clicked = false; 
 	
 	
-	private TriangleController triangleController;
+	private ConcurrentLinkedQueue<Event> event;
 	public int n;
 	
 	public EmptyCircle() {
@@ -28,11 +30,11 @@ public class EmptyCircle extends JComponent implements MouseListener {
 		addMouseListener(this);
 	}
 	
-	public EmptyCircle(boolean higlight, int n, TriangleController triangleController) {
+	public EmptyCircle(boolean higlight, int n, ConcurrentLinkedQueue<Event> event) {
 		this();
 		this.highlight = higlight;
 		this.n = n;
-		this.triangleController = triangleController;
+		this.event = event;
 	}
 	
 	public void paintComponent(Graphics g) {

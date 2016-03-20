@@ -2,6 +2,7 @@ package backgammon.client.ui.shape;
 
 import java.awt.Color;
 import java.util.Observable;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,29 +10,29 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config.Side;
+import backgammon.client.control.Event;
 import backgammon.client.control.TriangleController;
+import backgammon.client.control.Event.EventT;
 
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	public int n;
 	public boolean clicked = false; 
-	private TriangleController triangleController;
+	private ConcurrentLinkedQueue<Event> eventQueue;
 	
-	public HeadCircle(Side side, int n, TriangleController triangleController) {
+	public HeadCircle(Side side, int n, ConcurrentLinkedQueue<Event> event) {
 		super(side);
 		
 		this.n = n;
 		enableInputMethods(true);   
 		addMouseListener(this);
-		
-		this.triangleController = triangleController;
+		this.eventQueue = event;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		clicked = true;
-		this.myColor = Color.red;
-		triangleController.drawNCountersAtTriangleT(n, 20);
+		this.eventQueue.add(new Event(EventT.add, null, this));
 		repaint();
 	}
 

@@ -2,6 +2,7 @@ package backgammon.client.control;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -17,22 +18,28 @@ public class TriangleController implements BoardInterface{
 	
 	private List<TriangleInterface> triangles;
 	private BasicBoard board;
+	private GameController controller;
+	private ConcurrentLinkedQueue<Event> event;
 	
 	public TriangleController(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
 		board = new BasicBoard(this.triangles, Side.black);
 		// Pass self to game controller
-		GameController controller = new GameController(this);
 	}
 	
 	public TriangleController() {
-		board = new BasicBoard(this.triangles, Side.black);
 		// Pass self to game controller
+	}
+	
+	public void setEvent(ConcurrentLinkedQueue<Event> eventQueue) {
 		GameController controller = new GameController(this);
+		controller.dispatchEventThread(eventQueue);
 	}
 	
 	public void setTriangles(List<Triangle> triangles) {
+		board = new BasicBoard(this.triangles, Side.black);
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
+		
 	}
 	
 	public TriangleInterface getTriangle(int n) {
@@ -51,8 +58,6 @@ public class TriangleController implements BoardInterface{
 		
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
-		
-		
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) {
@@ -64,6 +69,7 @@ public class TriangleController implements BoardInterface{
 		TriangleInterface triangle = getTriangle(t);
 		triangle.setSide(side);
 		((Triangle) triangle).drawCircles(n);
+		
 	}
 	
 	public void add(int t) {

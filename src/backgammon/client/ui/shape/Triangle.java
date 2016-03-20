@@ -6,11 +6,14 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import backgammon.client.config.Config.Side;
+import backgammon.client.control.Event;
 import backgammon.client.control.TriangleController;
 import backgammon.engine.board.TriangleInterface;
 
@@ -23,20 +26,19 @@ public class Triangle extends JComponent implements TriangleInterface {
 	private HeadCircle head;
 	private Circle replaceableCircle;
 	public Side side;
-	private TriangleController triangleController;
+	private ConcurrentLinkedQueue<Event> eventQueue;
 	
-	public Triangle(int i, TriangleController triangleController) {
+	public Triangle(int i, ConcurrentLinkedQueue<Event> event) {
 		this.n = i;
 		this.side = Side.white;
-		this.triangleController = triangleController;
-		
+		this.eventQueue = event;
 	}
 	
 	
-	public Triangle(int i, Side side, TriangleController triangleController) {
+	public Triangle(int i, Side side, ConcurrentLinkedQueue<Event> event) {
 		this.n = i;
 		this.side = side;
-		this.triangleController = triangleController;
+		this.eventQueue = event;
 	}
 	
 	@Override
@@ -105,7 +107,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 			gbc.fill = GridBagConstraints.BOTH;
 			
 			if (i == (flag ? 5 : (n - 1 ))) {
-				add (head = new HeadCircle(this.side, this.n, triangleController), gbc);
+				add (head = new HeadCircle(this.side, this.n, eventQueue), gbc);
 			} else {
 				add(replaceableCircle = new Circle(this.side), gbc);
 			}
@@ -142,7 +144,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 		
 	}
 	
-	private void highlight(int n) {
+	public void highlight(int n) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		boolean flag = n > 4;
 		boolean bottom = this.n >= 1 && this.n <= 12;
@@ -175,9 +177,9 @@ public class Triangle extends JComponent implements TriangleInterface {
 			GridBagLayout layout = (GridBagLayout)getLayout();
 			GridBagConstraints headGbc = layout.getConstraints(replaceableCircle);
 			remove(replaceableCircle);
-			add(new EmptyCircle(true, this.n, triangleController), headGbc);
+			add(new EmptyCircle(true, this.n, eventQueue), headGbc);
 		} else {
-			add(new EmptyCircle(true, this.n, triangleController), gbc);
+			add(new EmptyCircle(true, this.n, eventQueue), gbc);
 		}
 		
 	}
