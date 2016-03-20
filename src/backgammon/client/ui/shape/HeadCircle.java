@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import backgammon.client.config.Config.Side;
 import backgammon.client.control.Event;
 import backgammon.client.control.TriangleController;
-import backgammon.client.control.Event.EventT;
 
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +33,7 @@ public class HeadCircle extends Circle implements MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 		clicked = true;
 		try {
-			this.eventQueue.put(new Event(EventT.add, null, this));
+			this.eventQueue.put(new Event(null, this));
 		} catch (InterruptedException e) {
 			System.out.println("Something interrupted our queue, :(");
 			e.printStackTrace();
