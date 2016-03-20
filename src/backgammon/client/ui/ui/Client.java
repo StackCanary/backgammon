@@ -47,6 +47,14 @@ public class Client extends JFrame {
 	
 	public static void main(String args[]) {
 		
+		if (args.length < 1) {
+			System.out.println("Usage: ");
+			System.out.println("[program] PvP");
+			System.out.println("[program] PvA");
+			System.out.println("[program] PvN");
+			return;
+		}
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Client client = new Client();

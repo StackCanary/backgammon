@@ -29,6 +29,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 		this.n = i;
 		this.side = Side.white;
 		this.triangleController = triangleController;
+		
 	}
 	
 	

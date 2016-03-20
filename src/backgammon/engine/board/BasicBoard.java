@@ -125,9 +125,6 @@ public class BasicBoard implements BoardInterface {
 	
 	public static void main(String[] args) {
 		BasicBoard board = new BasicBoard();
-//		for (Triangle triangle : board.triangles) {
-//			System.out.println(triangle.count);
-//		}
 		
 		List<Integer> moves = board.getPossibleMoves(1, new DiceRollHolder(4, 5));
 		System.out.println(moves);

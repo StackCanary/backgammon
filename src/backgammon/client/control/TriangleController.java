@@ -20,10 +20,19 @@ public class TriangleController implements BoardInterface{
 	
 	public TriangleController(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
-		drawInitBoard();
 		board = new BasicBoard(this.triangles, Side.black);
 		// Pass self to game controller
 		GameController controller = new GameController(this);
+	}
+	
+	public TriangleController() {
+		board = new BasicBoard(this.triangles, Side.black);
+		// Pass self to game controller
+		GameController controller = new GameController(this);
+	}
+	
+	public void setTriangles(List<Triangle> triangles) {
+		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
 	}
 	
 	public TriangleInterface getTriangle(int n) {

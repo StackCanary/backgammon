@@ -31,6 +31,7 @@ public class HeadCircle extends Circle implements MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 		clicked = true;
 		this.myColor = Color.red;
+		triangleController.drawNCountersAtTriangleT(n, 20);
 		repaint();
 	}
 

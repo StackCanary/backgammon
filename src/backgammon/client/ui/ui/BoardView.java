@@ -27,6 +27,8 @@ public class BoardView extends JComponent {
 		setBackground(Color.red);
 		setLayout(new GridBagLayout());
 		
+		triangleController = new TriangleController();
+		
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {
 			Triangle triangle = new Triangle(i, triangleController);
@@ -51,6 +53,9 @@ public class BoardView extends JComponent {
 			triangles.add(triangle);
 		}
 		
+		triangleController.setTriangles(triangles);
+		triangleController.drawInitBoard();
+		
 		JDummy spacer = new JDummy();
 		Dimension size = new Dimension(40, 80);
 		spacer.setMinimumSize(size);
@@ -60,7 +65,6 @@ public class BoardView extends JComponent {
 		gbc.gridy = 1;
 		add(spacer, gbc);
 		
-		setController();
 		
 	}
 	
@@ -69,7 +73,4 @@ public class BoardView extends JComponent {
 		super.paintComponent(g);
 	}
 	
-	public void setController() {
-		triangleController = new TriangleController(triangles);
-	}
 }
