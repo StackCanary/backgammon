@@ -1,8 +1,8 @@
 package backgammon.client.control;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
 
+import backgammon.client.config.Config.Side;
 import backgammon.client.socket.Network;
 
 /**
@@ -33,7 +33,15 @@ public class GameController {
 				
 				while(!quit) {
 						while((event = e.poll()) != null) {
-							System.out.println("We never reach this");
+							if (event.hCircle != null) {
+								triangleController.highlightAllPossibleMoves(event.hCircle.n);
+								continue;
+							}
+							
+							if (event.eCircle != null) {
+								System.out.println("A highlightable circle was clicked: " + event.eCircle.n);
+								continue;
+							}
 						}
 				}
 			}

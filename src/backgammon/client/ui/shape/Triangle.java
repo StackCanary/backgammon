@@ -182,17 +182,18 @@ public class Triangle extends JComponent implements TriangleInterface {
 		} else {
 			add(new EmptyCircle(true, this.n, eventQueue), gbc);
 		}
-		
 	}
 	
 	public void highlightNext() {
 		highlight(this.counters);
 		this.predictedHighlighted = true;
+		revalidate();
 	}
 	
 	public void unhighlight() {
 		drawCircles(this.counters);
 		this.predictedHighlighted = false;
+		revalidate();
 	}
 
 	public Side getSide() {

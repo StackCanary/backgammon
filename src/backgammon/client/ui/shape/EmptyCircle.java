@@ -22,7 +22,7 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	private boolean clicked = false; 
 	
 	
-	private SynchronousQueue<Event> event;
+	private SynchronousQueue<Event> eventQueue;
 	public int n;
 	
 	public EmptyCircle() {
@@ -35,7 +35,7 @@ public class EmptyCircle extends JComponent implements MouseListener {
 		this();
 		this.highlight = higlight;
 		this.n = n;
-		this.event = event;
+		this.eventQueue = event;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -71,12 +71,12 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (!highlight) {
-			return;
+		try {
+			this.eventQueue.put(new Event(this, null));
+		} catch (InterruptedException e1) {
+			System.out.println("Something interrupted our queue, :(");
+			e1.printStackTrace();
 		}
-		
-		JOptionPane.showMessageDialog(this, "hi");
-		
 	}
 
 	@Override

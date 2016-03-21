@@ -1,18 +1,12 @@
 package backgammon.client.ui.shape;
 
 import java.awt.Color;
-import java.util.Observable;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JOptionPane;
-
 import backgammon.client.config.Config.Side;
 import backgammon.client.control.Event;
-import backgammon.client.control.TriangleController;
 
 public class HeadCircle extends Circle implements MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -49,10 +43,10 @@ public class HeadCircle extends Circle implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		if (!clicked) {
+	//	if (!clicked) {
 			this.myColor = this.save;
 			repaint();
-		}
+	//	}
 	}
 
 	@Override
