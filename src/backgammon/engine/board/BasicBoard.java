@@ -10,20 +10,28 @@ public class BasicBoard implements BoardInterface {
 	List<TriangleInterface> triangles = new ArrayList<TriangleInterface>();
 	List<TriangleInterface> save;
 	Side turn = Side.black;
+	private int blackCounters = 15;
+	private int whiteCounters = 15;
+	DiceRollHolder diceHolder;
+	DiceRollEngine diceEngine = new DiceRollEngine();
 	boolean capture = false;
 	boolean legal = false;
+	
+	private List<Integer> currentMoveRemaining;
 	
 	Legal theLaw;
 	
 	public BasicBoard() {
 		setBoard();
 		theLaw = new Legal(this);
+		setDice(diceEngine.getNext());
 	}
 	
 	public BasicBoard(List<TriangleInterface> triangles, Side turn) {
 		this.triangles = triangles;
 		this.turn = turn;
 		theLaw = new Legal(this);
+		setDice(diceEngine.getNext());
 	}
 	
 	public void setBoard() {
@@ -57,7 +65,7 @@ public class BasicBoard implements BoardInterface {
 		
 		Iterator<Integer> iterator = roll.options.iterator();
 		List<Integer> legalMoveList = new ArrayList<Integer>();
-		boolean left = (this.turn == Side.black);
+		boolean left = (getTriangle(triangle).getSide() == Side.black);
 		while(iterator.hasNext()) {
 			int move = iterator.next();
 			boolean isLegal = theLaw.canMove(triangle, triangle + (left ? move : - move));
@@ -68,12 +76,23 @@ public class BasicBoard implements BoardInterface {
 		
 		return legalMoveList;
 	}
+	
+	public void setDice(DiceRollHolder holder) {
+		this.diceHolder = holder;
+	}
+	
+	public DiceRollHolder getDice() {
+		return this.diceHolder;
+	} 
+	
 	@Override
 	public boolean move(int from, int to) {
-		legal = theLaw.canMove(from, to);
+		
+		List<Integer> legalMoves = getPossibleMoves(from, diceHolder);
+		
 		capture = theLaw.isCapture(from, to);
 		
-		if (legal) {
+		if (legalMoves.contains(to)) {
 			if (capture) {
 				capture(to);
 				remove(from);
@@ -81,9 +100,18 @@ public class BasicBoard implements BoardInterface {
 				add(to);
 				remove(from);
 			}
+			
+			diceHolder.options.remove((Object) Math.abs(from - to));
 		}
 		
-		return legal;
+		if (diceHolder.options.isEmpty()) {
+			switchSide();
+			setDice(diceEngine.getNext());
+		}
+		
+		checkGameOver();
+		
+		return true;
 	}
 	
 	@Override
@@ -123,11 +151,19 @@ public class BasicBoard implements BoardInterface {
 		return i + 1;
 	}
 	
-	public static void main(String[] args) {
-		BasicBoard board = new BasicBoard();
+	@Override
+	public void switchSide() {
+		this.turn = (this.turn == Side.black) ? Side.white : Side.black;
+	}
+	
+	public void checkGameOver() {
+		if (blackCounters == 0) {
+			System.out.println("Black won");
+		}
 		
-		List<Integer> moves = board.getPossibleMoves(1, new DiceRollHolder(4, 5));
-		System.out.println(moves);
+		if (whiteCounters == 0) {
+			System.out.println("White won");
+		}
 	}
 
 

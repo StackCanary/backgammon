@@ -22,6 +22,7 @@ public class TriangleController implements BoardInterface{
 	private GameController controller;
 	private SynchronousQueue<Event> eventQueue;
 	private List<Integer> highlighted = new ArrayList<Integer>();
+	public int lastClicked;
 	
 	public TriangleController(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
@@ -111,7 +112,7 @@ public class TriangleController implements BoardInterface{
 	}
 	
 	public void highlightAllPossibleMoves(int t) {
-		for (int i: getPossibleMoves(t, new DiceRollHolder(6, 6))) {
+		for (int i: getPossibleMoves(t, board.getDice())) {
 			highlightCounter(i);
 		}
 	}
@@ -147,6 +148,18 @@ public class TriangleController implements BoardInterface{
 	public List<TriangleInterface> getTriangles() {
 		return board.getTriangles();
 	}
+	
+	@Override
+	public void setDice(DiceRollHolder holder) {
+		board.setDice(holder);
+	}
+
+	@Override
+	public void switchSide() {
+		board.switchSide();
+	}
+	
+	
 
 
 }

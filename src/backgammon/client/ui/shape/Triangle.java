@@ -74,7 +74,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 		setLayout(new GridBagLayout());
 		
 		if (n > 5) {
-			System.out.println("N is greater than 5 in Triangle");
+			
 		}
 		
 		//The offending line :()
@@ -166,7 +166,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 		}
 		
 		if (n > 4) {
-			System.out.println("N is greater than 4 in Triangle");
+			
 		}
 		
 		gbc.fill = GridBagConstraints.BOTH;

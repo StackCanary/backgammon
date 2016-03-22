@@ -31,16 +31,23 @@ public class GameController {
 				boolean quit = false;
 				Event event;
 				
+				int lastLastClicked = 0;
+				
 				while(!quit) {
 						while((event = e.poll()) != null) {
 							if (event.hCircle != null) {
 								triangleController.unhighlightAll();
 								triangleController.highlightAllPossibleMoves(event.hCircle.n);
+								if (lastLastClicked == event.hCircle.n) {
+									triangleController.bearOff(event.hCircle.n);
+								} else {
+									lastLastClicked = event.hCircle.n;
+								}
 								continue;
 							}
 							
 							if (event.eCircle != null) {
-								System.out.println("A highlightable circle was clicked: " + event.eCircle.n);
+								triangleController.move(lastLastClicked, event.eCircle.n);
 								continue;
 							}
 						}
