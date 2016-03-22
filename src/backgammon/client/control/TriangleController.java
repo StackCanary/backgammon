@@ -26,7 +26,7 @@ public class TriangleController implements BoardInterface{
 	
 	public TriangleController(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
-		board = new BasicBoard(this.triangles, Side.black);
+//		board = new BasicBoard(this.triangles, Side.black);
 		// Pass self to game controller
 	}
 	
@@ -48,7 +48,7 @@ public class TriangleController implements BoardInterface{
 	
 	public void setTriangles(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
-		board = new BasicBoard(this.triangles, Side.black);
+	//	board = new BasicBoard(this.triangles, Side.black);
 		
 	}
 	
@@ -119,7 +119,6 @@ public class TriangleController implements BoardInterface{
 
 	@Override
 	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
-		System.out.println(board.getPossibleMoves(triangle, roll));
 		return board.getPossibleMoves(triangle, roll);
 	}
 

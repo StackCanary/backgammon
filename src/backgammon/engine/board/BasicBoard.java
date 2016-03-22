@@ -89,7 +89,8 @@ public class BasicBoard implements BoardInterface {
 	public boolean move(int from, int to) {
 		
 		List<Integer> legalMoves = getPossibleMoves(from, diceHolder);
-		
+		System.out.println(from);
+		System.out.println(legalMoves);
 		capture = theLaw.isCapture(from, to);
 		
 		if (legalMoves.contains(to)) {
@@ -102,6 +103,8 @@ public class BasicBoard implements BoardInterface {
 			}
 			
 			diceHolder.options.remove((Object) Math.abs(from - to));
+		} else {
+			System.out.println("Doesn't contain " + to);
 		}
 		
 		if (diceHolder.options.isEmpty()) {

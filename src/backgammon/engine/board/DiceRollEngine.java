@@ -11,7 +11,9 @@ public class DiceRollEngine {
 	}
 	
 	public DiceRollHolder getNext() {
-		return (holder = new DiceRollHolder(random.nextInt(7), random.nextInt(7)));
+		 holder = new DiceRollHolder(1 + random.nextInt(7),1 + random.nextInt(7));
+		 System.out.println("options " + holder.options.toString());
+		 return holder;
 	}
 	
 	public DiceRollHolder getCurrent() {

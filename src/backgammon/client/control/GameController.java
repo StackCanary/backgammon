@@ -48,6 +48,7 @@ public class GameController {
 							
 							if (event.eCircle != null) {
 								triangleController.move(lastLastClicked, event.eCircle.n);
+								triangleController.unhighlightAll();
 								continue;
 							}
 						}

@@ -193,7 +193,6 @@ public class Triangle extends JComponent implements TriangleInterface {
 	public void highlightNext() {
 		this.predictedHighlighted = true;
 		highlight(this.counters);
-		System.out.println("Counter: " + this.counters);
 	}
 	
 	public void unhighlight() {
