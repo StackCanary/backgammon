@@ -21,6 +21,7 @@ public class TriangleController implements BoardInterface{
 	private BasicBoard board;
 	private GameController controller;
 	private SynchronousQueue<Event> eventQueue;
+	private List<Integer> highlighted = new ArrayList<Integer>();
 	
 	public TriangleController(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
@@ -30,6 +31,12 @@ public class TriangleController implements BoardInterface{
 	
 	public TriangleController() {
 		// Pass self to game controller
+	}
+	
+	public void reset() {
+		for (TriangleInterface t : board.getTriangles()) {
+			drawNCountersAtTriangleT(t.getN(), t.getCount());
+		}
 	}
 	
 	public void setEvent(SynchronousQueue<Event> eventQueue) {
@@ -61,6 +68,7 @@ public class TriangleController implements BoardInterface{
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
 		
+		
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) {
@@ -85,8 +93,17 @@ public class TriangleController implements BoardInterface{
 		drawNCountersAtTriangleT(t, board.getTriangle(t).getCount());
 	}
 	
+	public void unhighlightAll() {
+		for (int t : highlighted) {
+			unhighlightCounter(t);
+		}
+		
+		highlighted.clear();
+	}
+	
 	public void highlightCounter(int t) {
 		((Triangle )getTriangle(t)).highlightNext(); 
+		highlighted.add(t);
 	}
 	
 	public void unhighlightCounter(int t) {
@@ -95,13 +112,13 @@ public class TriangleController implements BoardInterface{
 	
 	public void highlightAllPossibleMoves(int t) {
 		for (int i: getPossibleMoves(t, new DiceRollHolder(6, 6))) {
-			highlightCounter(t);
+			highlightCounter(i);
 		}
 	}
 
 	@Override
 	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
-		// TODO Auto-generated method stub
+		System.out.println(board.getPossibleMoves(triangle, roll));
 		return board.getPossibleMoves(triangle, roll);
 	}
 

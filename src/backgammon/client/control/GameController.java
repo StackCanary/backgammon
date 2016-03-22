@@ -34,6 +34,7 @@ public class GameController {
 				while(!quit) {
 						while((event = e.poll()) != null) {
 							if (event.hCircle != null) {
+								triangleController.unhighlightAll();
 								triangleController.highlightAllPossibleMoves(event.hCircle.n);
 								continue;
 							}

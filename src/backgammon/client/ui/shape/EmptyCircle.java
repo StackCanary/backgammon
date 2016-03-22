@@ -71,11 +71,13 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		try {
-			this.eventQueue.put(new Event(this, null));
-		} catch (InterruptedException e1) {
-			System.out.println("Something interrupted our queue, :(");
-			e1.printStackTrace();
+		if (highlight) {
+			try {
+				this.eventQueue.put(new Event(this, null));
+			} catch (InterruptedException e1) {
+				System.out.println("Something interrupted our queue, :(");
+				e1.printStackTrace();
+			}
 		}
 	}
 

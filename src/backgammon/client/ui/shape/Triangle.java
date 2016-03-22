@@ -77,7 +77,10 @@ public class Triangle extends JComponent implements TriangleInterface {
 			System.out.println("N is greater than 5 in Triangle");
 		}
 		
-		this.counters = n;
+		//The offending line :()
+		if (!predictedHighlighted) {
+			this.counters = n;
+		}
 		
 		JDummy spacer = new JDummy();
 		gbc.gridx = 0;
@@ -110,7 +113,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 			if (i == (flag ? 5 : (n - 1 ))) {
 				add (head = new HeadCircle(this.side, this.n, eventQueue), gbc);
 			} else {
-				add(replaceableCircle = new Circle(this.side), gbc);
+				add(replaceableCircle = new HeadCircle(this.side, this.n, eventQueue), gbc);
 			}
 			
 		}
@@ -127,7 +130,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 			
 			gbc.weightx = 3;
 			gbc.weighty = 1;
-			add(new StackedCircle(this.side, n - 4), gbc);
+			add(new StackedCircle(this.side, n - 4, this.n, eventQueue), gbc);
 		}
 				
 		for (int i = n; i < 5; i++) {
@@ -143,6 +146,7 @@ public class Triangle extends JComponent implements TriangleInterface {
 			add(new EmptyCircle(), gbc);
 		}
 		
+		revalidate();
 	}
 	
 	public void highlight(int n) {
@@ -182,18 +186,19 @@ public class Triangle extends JComponent implements TriangleInterface {
 		} else {
 			add(new EmptyCircle(true, this.n, eventQueue), gbc);
 		}
+		
+		revalidate();
 	}
 	
 	public void highlightNext() {
-		highlight(this.counters);
 		this.predictedHighlighted = true;
-		revalidate();
+		highlight(this.counters);
+		System.out.println("Counter: " + this.counters);
 	}
 	
 	public void unhighlight() {
-		drawCircles(this.counters);
 		this.predictedHighlighted = false;
-		revalidate();
+		drawCircles(this.counters);
 	}
 
 	public Side getSide() {
