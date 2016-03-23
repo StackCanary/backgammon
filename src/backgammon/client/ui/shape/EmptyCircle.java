@@ -60,18 +60,19 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	
 	public void setHighlight() {
 		this.highlight = true;
-		repaint();
+		revalidate();
 	}
 	
 	public void deHighlight() {
 		this.highlight = false;
-		repaint();
+		revalidate();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (highlight) {
+			System.out.println("Hi");
 			try {
 				this.eventQueue.put(new Event(this, null));
 			} catch (InterruptedException e1) {

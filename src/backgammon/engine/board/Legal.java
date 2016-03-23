@@ -17,21 +17,26 @@ public class Legal {
 	}
 	
 	public boolean isCapture(int from, int to) {
-		return (board.getTriangle(from).getSide() != board.getTriangle(to).getSide());
+		if ((from >= 1 && from <= 24) && (to >= 1 && to <= 24)) {
+			boolean result = (board.getTriangle(from).getSide() != board.getTriangle(to).getSide());
+			return result;
+		}
+		
+		return false;
 	}
 	
-	public boolean isBearingOff(int from, int to) {
+	public boolean isLegalBearingOff(int from, int to) {
 		TriangleInterface fromTriangle = board.getTriangle(from);
 		
-		boolean isBlack = (board.turn == Side.black);
+		boolean isBlack = (fromTriangle.getSide() == Side.black);
 		if (isBlack) {
-			if (from >= 19 && from <= 24 && to == 25) {
-				return true;
-			}
+				if (from >= 19 && from <= 24 && to == 25) {
+					return true;
+				}
 		} else {
-			if (from >= 1 && from <= 6 && to == 0) {
-				return true;
-			}
+				if (from >= 1 && from <= 6 && to == 0) {
+					return true;
+				}
 		}
 		
 		return false;

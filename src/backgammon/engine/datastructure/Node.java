@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.board.BasicBoard;
 
 public class Node {
 	Node parent;
 	public Side side;
 	public int score;
+	public BasicBoard board;
 	public boolean head;
 	List<Node> children = new ArrayList<Node>();
 	

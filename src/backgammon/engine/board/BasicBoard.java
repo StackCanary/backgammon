@@ -2,7 +2,9 @@ package backgammon.engine.board;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import backgammon.client.config.Config.Side;
 
@@ -16,7 +18,8 @@ public class BasicBoard implements BoardInterface {
 	DiceRollEngine diceEngine = new DiceRollEngine();
 	boolean capture = false;
 	boolean legal = false;
-	
+	boolean bearOff = false;
+	Score score = null; 
 	private List<Integer> currentMoveRemaining;
 	
 	Legal theLaw;
@@ -62,19 +65,43 @@ public class BasicBoard implements BoardInterface {
 	
 	@Override
 	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
-		
 		Iterator<Integer> iterator = roll.options.iterator();
 		List<Integer> legalMoveList = new ArrayList<Integer>();
+		System.out.println(triangle);
 		boolean left = (getTriangle(triangle).getSide() == Side.black);
 		while(iterator.hasNext()) {
 			int move = iterator.next();
 			boolean isLegal = theLaw.canMove(triangle, triangle + (left ? move : - move));
 			if (isLegal) {
-				legalMoveList.add(move);
+				legalMoveList.add(triangle + (left ? move : - move));
 			} 
 		}
 		
-		return legalMoveList;
+		Set<Integer> legalSet = new LinkedHashSet<Integer>(legalMoveList);
+		return new ArrayList<Integer>(legalMoveList);
+	}
+	
+	enum Score {
+		noMove (0),
+		move (1),
+		stack (2),
+		capture (4),
+		bearOff(3);
+		
+		final int score;
+		
+		Score(int score) {
+			this.score = score;
+		}
+		
+		public int getScore() {
+			return score;
+		}
+		
+	}
+
+	public int evaluate() {
+		return this.score.getScore();
 	}
 	
 	public void setDice(DiceRollHolder holder) {
@@ -87,19 +114,29 @@ public class BasicBoard implements BoardInterface {
 	
 	@Override
 	public boolean move(int from, int to) {
-		
 		List<Integer> legalMoves = getPossibleMoves(from, diceHolder);
+		
+		if (legalMoves.isEmpty()) {
+			this.score = Score.noMove;
+		}
+		
 		System.out.println(from);
 		System.out.println(legalMoves);
 		capture = theLaw.isCapture(from, to);
+		bearOff = theLaw.isLegalBearingOff(from, to);
 		
 		if (legalMoves.contains(to)) {
-			if (capture) {
+			if (bearOff) {
+				bearOff(from);
+				this.score = Score.capture;
+			} else if (capture) {
 				capture(to);
 				remove(from);
+				this.score = Score.bearOff;
 			} else {
 				add(to);
 				remove(from);
+				this.score = Score.move;
 			}
 			
 			diceHolder.options.remove((Object) Math.abs(from - to));
@@ -125,8 +162,12 @@ public class BasicBoard implements BoardInterface {
 	
 	@Override
 	public void bearOff(int from) {
-		// TODO Auto-generated method stub
-		
+		remove(from);
+		if (turn == Side.black) {
+			blackCounters--;
+		} else {
+			whiteCounters--;
+		}
 	}
 	
 	@Override

@@ -35,14 +35,11 @@ public class GameController {
 				
 				while(!quit) {
 						while((event = e.poll()) != null) {
+							System.out.println(event);
+							
 							if (event.hCircle != null) {
 								triangleController.unhighlightAll();
 								triangleController.highlightAllPossibleMoves(event.hCircle.n);
-								if (lastLastClicked == event.hCircle.n) {
-									triangleController.bearOff(event.hCircle.n);
-								} else {
-									lastLastClicked = event.hCircle.n;
-								}
 								continue;
 							}
 							
@@ -51,7 +48,8 @@ public class GameController {
 								triangleController.unhighlightAll();
 								continue;
 							}
-						}
+							
+ 						}
 				}
 			}
 		});
