@@ -184,8 +184,6 @@ public class Triangle extends JComponent implements TriangleInterface {
 			remove(replaceableCircle);
 			add(new EmptyCircle(true, this.n, eventQueue), headGbc);
 		} else {
-			
-			//instantiated here
 			add(new EmptyCircle(true, this.n, eventQueue), gbc);
 		}
 		

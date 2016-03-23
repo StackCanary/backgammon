@@ -52,7 +52,6 @@ public class Legal {
 			}
 		} else {
 			if (from < to) {
-				System.out.println("False");
 				return false;
 			}
 		}

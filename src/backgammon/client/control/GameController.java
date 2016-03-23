@@ -35,11 +35,11 @@ public class GameController {
 				
 				while(!quit) {
 						while((event = e.poll()) != null) {
-							System.out.println(event);
 							
 							if (event.hCircle != null) {
 								triangleController.unhighlightAll();
 								triangleController.highlightAllPossibleMoves(event.hCircle.n);
+								lastLastClicked = event.hCircle.n;
 								continue;
 							}
 							
