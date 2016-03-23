@@ -69,7 +69,6 @@ public class TriangleController implements BoardInterface{
 		drawNCountersAtTriangleT(19, 5, Side.black);
 		drawNCountersAtTriangleT(24, 2, Side.white);
 		
-		
 	}
 	
 	public void drawNCountersAtTriangleT(int t, int n) {

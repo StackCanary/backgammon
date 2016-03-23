@@ -27,8 +27,6 @@ public class EmptyCircle extends JComponent implements MouseListener {
 	
 	public EmptyCircle() {
 
-		enableInputMethods(true);   
-		addMouseListener(this);
 	}
 	
 	public EmptyCircle(boolean higlight, int n, SynchronousQueue<Event> event) {
@@ -36,6 +34,10 @@ public class EmptyCircle extends JComponent implements MouseListener {
 		this.highlight = higlight;
 		this.n = n;
 		this.eventQueue = event;
+		
+		
+		enableInputMethods(true);   
+		addMouseListener(this);
 	}
 	
 	public void paintComponent(Graphics g) {
