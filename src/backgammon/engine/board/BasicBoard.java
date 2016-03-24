@@ -16,9 +16,7 @@ public class BasicBoard implements BoardInterface {
 	private int whiteCounters = 15;
 	DiceRollHolder diceHolder;
 	DiceRollEngine diceEngine = new DiceRollEngine();
-	boolean capture = false;
-	boolean legal = false;
-	boolean bearOff = false;
+
 	Score score = null; 
 	private List<Integer> currentMoveRemaining;
 	
@@ -114,6 +112,13 @@ public class BasicBoard implements BoardInterface {
 	
 	@Override
 	public boolean move(int from, int to) {
+		boolean capture = false;
+		boolean legal = false;
+		boolean bearOff = false;
+		boolean canMove = false;
+		
+		System.out.println("From : " + getTriangle(from).getCount() + " : " + getTriangle(from).getSide());
+		System.out.println("To : " + getTriangle(to).getCount() + " : " + getTriangle(to).getSide());
 		List<Integer> legalMoves = getPossibleMoves(from, diceHolder);
 		
 		if (legalMoves.isEmpty()) {
@@ -124,18 +129,21 @@ public class BasicBoard implements BoardInterface {
 		System.out.println(legalMoves);
 		capture = theLaw.isCapture(from, to);
 		bearOff = theLaw.isLegalBearingOff(from, to);
+		canMove = theLaw.canMove(from, to);
 		
 		if (legalMoves.contains(to)) {
 			if (bearOff) {
 				bearOff(from);
-				this.score = Score.capture;
-			} else if (capture) {
-				capture(to);
-				remove(from);
 				this.score = Score.bearOff;
-			} else {
-				add(to);
+			} else if (capture && canMove) {
 				remove(from);
+				capture(to);
+				this.score = Score.capture;
+				System.out.println("IS THIS STILL EXECUTING?");
+			} else {
+				getTriangle(to).setSide(getTriangle(from).getSide());
+				remove(from);
+				add(to);
 				this.score = Score.move;
 			}
 			
@@ -150,13 +158,15 @@ public class BasicBoard implements BoardInterface {
 		}
 		
 		checkGameOver();
-		
+		System.out.println("From : " + getTriangle(from).getCount() + " : " + getTriangle(from).getSide());
+		System.out.println("To : " + getTriangle(to).getCount() + " : " + getTriangle(to).getSide());
 		return true;
 	}
 	
 	@Override
 	public void capture(int triangle) {
 		getTriangle(triangle).switchSide();
+		remove(triangle);
 		add(triangle);
 	}
 	
@@ -173,6 +183,7 @@ public class BasicBoard implements BoardInterface {
 	@Override
 	public void add(int triangle) {
 		getTriangle(triangle).setCount(getTriangle(triangle).getCount() + 1);
+		System.out.println("Count " + getTriangle(triangle).getCount());
 	}
 	
 	@Override

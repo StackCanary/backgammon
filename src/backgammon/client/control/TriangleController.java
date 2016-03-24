@@ -125,9 +125,8 @@ public class TriangleController implements BoardInterface{
 	public boolean move(int from, int to) {
 		boolean result = board.move(from, to);
 		System.out.println("Moving " + from + ":"+ to);
-		drawNCountersAtTriangleT(from, board.getTriangle(from).getCount());
-		drawNCountersAtTriangleT(to, board.getTriangle(to).getCount());
-		
+		drawNCountersAtTriangleT(from, board.getTriangle(from).getCount(), board.getTriangle(from).getSide());
+		drawNCountersAtTriangleT(to, board.getTriangle(to).getCount(), board.getTriangle(to).getSide());
 		return result;
 	}
 
