@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.ai.Scorable;
 
-public class BasicBoard implements BoardInterface {
+public class BasicBoard implements BoardInterface, Scorable {
 	List<TriangleInterface> triangles = new ArrayList<TriangleInterface>();
 	List<TriangleInterface> save;
 	Side turn = Side.black;
@@ -16,6 +17,7 @@ public class BasicBoard implements BoardInterface {
 	private int whiteCounters = 15;
 	DiceRollHolder diceHolder;
 	DiceRollEngine diceEngine = new DiceRollEngine();
+	boolean gameOver = false;
 
 	Score score = null; 
 	private List<Integer> currentMoveRemaining;
@@ -79,6 +81,7 @@ public class BasicBoard implements BoardInterface {
 		return new ArrayList<Integer>(legalMoveList);
 	}
 	
+	
 	enum Score {
 		noMove (0),
 		move (1),
@@ -97,9 +100,17 @@ public class BasicBoard implements BoardInterface {
 		}
 		
 	}
+	
+	public Side getTurn() {
+		return turn;
+	}
 
 	public int evaluate() {
 		return this.score.getScore();
+	}
+	
+	public boolean hasEnded() {
+		return gameOver;
 	}
 	
 	public void setDice(DiceRollHolder holder) {
@@ -211,11 +222,31 @@ public class BasicBoard implements BoardInterface {
 	public void checkGameOver() {
 		if (blackCounters == 0) {
 			System.out.println("Black won");
+			gameOver = true;
 		}
 		
 		if (whiteCounters == 0) {
 			System.out.println("White won");
+			gameOver = true;
 		}
+	}
+
+	@Override
+	public int getScore() {
+		return evaluate();
+	}
+
+	@Override
+	public List<Scorable> getChildren(Scorable o) {
+		List<Scorable> result = new ArrayList<Scorable>();
+		
+		for (int j = 1; j <= 6; j++) {
+			for (int i = 1; i <= 6; i++) {
+				result.add(new DiceRollHolder(i, j));
+			}
+		}
+		
+		return result;
 	}
 
 

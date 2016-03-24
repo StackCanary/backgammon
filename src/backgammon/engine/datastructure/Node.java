@@ -4,27 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.ai.Scorable;
 import backgammon.engine.board.BasicBoard;
 
 public class Node {
 	Node parent;
 	public Side side;
 	public int score;
-	public BasicBoard board;
+	public Scorable scorable;
 	public boolean head;
 	List<Node> children = new ArrayList<Node>();
 	
-	public Node() {
-		head = true;
-	}
 	
-	public Node(Node parent, int score, int side) {
+	public Node(Scorable scorable, Node parent) {
+		this.scorable = scorable;
 		this.parent = parent;
-		this.score = score;
-	}
-	
-	public Node(Node parent) {
-		this.parent = parent;
+		
 	}
 	
 	public void add(Node node) {
@@ -41,14 +36,39 @@ public class Node {
 	}
 	
 	public List<Node> getChildren() {
-		return this.children;
+		if (this.children != null) {
+			return this.children;
+		} else {
+			createChildren();
+			return this.children;
+		}
 	}
 	
-	public static void main(String[] args) {
-	    Node head = new Node();
-	    
-	    
-	    
+	public void createChildren() {
+		for (Scorable s : scorable.getChildren(scorable)) {
+			add(new Node(scorable, this));
+		}
+	}
+ 	
+	public int getScore() {
+		return scorable.getScore();
+	}
+	
+	public boolean isTerminal() {
+		if (scorable instanceof BasicBoard) {
+			return ((BasicBoard) scorable).hasEnded();
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public Side turn() {
+		if (scorable instanceof BasicBoard) {
+			return ((BasicBoard) scorable).getTurn();
+		} else {
+			return Side.chance;
+		}
 	}
 	
 }

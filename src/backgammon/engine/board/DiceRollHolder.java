@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class DiceRollHolder {
+import backgammon.engine.ai.Scorable;
+
+public class DiceRollHolder implements Scorable {
 	public final int x;
 	public final int y;
 	public List<Integer> options = new ArrayList<Integer>();
@@ -47,6 +49,24 @@ public class DiceRollHolder {
 			options.remove((Object) i);
 			options.remove((Object) (x + y));
 		}
+	}
+
+	@Override
+	public int getScore() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Scorable> getChildren(Scorable o) {
+		if (o instanceof BasicBoard) {
+			
+		}
+		return null;
+	}
+	
+	public static double getExpectedValue(int x, int y) {
+		return (x);
 	}
 		
 }
