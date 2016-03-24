@@ -17,13 +17,15 @@ public class Legal {
 	}
 	
 	public boolean isCapture(int from, int to) {
+	
+		
 		if ((from >= 1 && from <= 24) && (to >= 1 && to <= 24)) {
 			if (board.getTriangle(to).getCount() < 1) {
 				return false;
 			}
 			
 			boolean result = (board.getTriangle(from).getSide() != board.getTriangle(to).getSide());
-			return !result;
+			return result;
 		}
 		
 		return false;
@@ -65,6 +67,12 @@ public class Legal {
 			TriangleInterface toTriangle = board.getTriangle(to);
 			
 			if (isCapture(from, to)) {
+				if (toTriangle.getCount() > 1) {
+					return false;
+				} 
+			}
+			
+			if (fromTriangle.getSide() != toTriangle.getSide()) {
 				if (toTriangle.getCount() > 1) {
 					return false;
 				} 

@@ -135,11 +135,10 @@ public class BasicBoard implements BoardInterface {
 			if (bearOff) {
 				bearOff(from);
 				this.score = Score.bearOff;
-			} else if (capture && canMove) {
+			} else if (capture) {
 				remove(from);
 				capture(to);
 				this.score = Score.capture;
-				System.out.println("IS THIS STILL EXECUTING?");
 			} else {
 				getTriangle(to).setSide(getTriangle(from).getSide());
 				remove(from);
@@ -166,8 +165,6 @@ public class BasicBoard implements BoardInterface {
 	@Override
 	public void capture(int triangle) {
 		getTriangle(triangle).switchSide();
-		remove(triangle);
-		add(triangle);
 	}
 	
 	@Override
