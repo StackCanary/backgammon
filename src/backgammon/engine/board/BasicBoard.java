@@ -146,7 +146,7 @@ public class BasicBoard implements BoardInterface {
 				this.score = Score.move;
 			}
 			
-			diceHolder.options.remove((Object) Math.abs(from - to));
+			diceHolder.clear(Math.abs(from - to));
 		} else {
 			System.out.println("Doesn't contain " + to);
 		}

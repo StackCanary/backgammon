@@ -33,5 +33,20 @@ public class DiceRollHolder {
 		
 	}
 	
+	public void clear(int i) {
+		if (i == x + y) {
+			options.clear();
+		}
+		
+		if (i == x) { 
+			options.remove((Object) i);
+			options.remove((Object) (x + y));
+		}
+		
+		if (i == y) {
+			options.remove((Object) i);
+			options.remove((Object) (x + y));
+		}
+	}
 		
 }
