@@ -26,8 +26,9 @@ public class HeadCircle extends Circle implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		clicked = true;
+		
 		try {
-			this.eventQueue.put(new Event(null, this));
+			this.eventQueue.put(new Event(null, this, arg0.getClickCount()));
 		} catch (InterruptedException e) {
 			System.out.println("Something interrupted our queue, :(");
 			e.printStackTrace();

@@ -37,9 +37,17 @@ public class GameController {
 						while((event = e.poll()) != null) {
 							
 							if (event.hCircle != null) {
-								triangleController.unhighlightAll();
-								triangleController.highlightAllPossibleMoves(event.hCircle.n);
-								lastLastClicked = event.hCircle.n;
+								if (event.clicks == 1) {
+									triangleController.unhighlightAll();
+									triangleController.highlightAllPossibleMoves(event.hCircle.n);
+									lastLastClicked = event.hCircle.n;
+								} else {
+									if (triangleController.getTriangle(event.hCircle.n).getSide() == Side.white) {
+										triangleController.move(event.hCircle.n, 0);
+									} else {
+										triangleController.move(event.hCircle.n, 25);
+									}
+								}
 								continue;
 							}
 							

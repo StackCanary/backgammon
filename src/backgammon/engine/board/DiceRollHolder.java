@@ -50,6 +50,7 @@ public class DiceRollHolder implements Scorable {
 			options.remove((Object) (x + y));
 		}
 	}
+	
 
 	@Override
 	public int getScore() {
@@ -59,11 +60,15 @@ public class DiceRollHolder implements Scorable {
 
 	@Override
 	public List<Scorable> getChildren(Scorable o) {
-		if (o instanceof BasicBoard) {
-			
+		List<Scorable> result = new ArrayList<Scorable>();
+		for (int j = 1; j <= 6; j++) {
+			for (int i = 1; i <= 6; i++) {
+				result.add(new DiceRollHolder(i, j));
+			}
 		}
-		return null;
+		return result;
 	}
+	
 	
 	public static double getExpectedValue(int x, int y) {
 		return (x);
