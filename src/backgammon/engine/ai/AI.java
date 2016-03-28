@@ -63,5 +63,6 @@ public class AI {
 		board.setBoard();
 		Node node = new Node(board, true);
 		System.out.println("Minmax " + ai.minimax(node, 3, Side.black, Side.white));
+		
 	}
 }

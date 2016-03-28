@@ -31,8 +31,30 @@ public class Legal {
 		return false;
 	}
 	
+	private boolean areAllMyPiecesInTheBearingOffArea(Side side) {
+		boolean flag = side == Side.black;
+		
+		int count = 0;
+		for (int i = (flag ? 1 : 7)  ; i <= (flag ?  18 : 24); i++) {
+			if (board.getTriangle(i).getSide() == side) {
+				count += board.getTriangle(i).getCount(); 
+			}
+		}
+	
+		if (count > 0) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
+	
 	public boolean isLegalBearingOff(int from, int to) {
 		TriangleInterface fromTriangle = board.getTriangle(from);
+		
+		if (!areAllMyPiecesInTheBearingOffArea(board.getTriangle(from).getSide())) {
+			return false;
+		}
 		
 		boolean isBlack = (fromTriangle.getSide() == Side.black);
 		if (isBlack) {

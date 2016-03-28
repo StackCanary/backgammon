@@ -49,6 +49,8 @@ public class BasicBoard implements BoardInterface, Scorable {
 	}
 	
 	public void setBoard() {
+		triangles = new ArrayList<TriangleInterface>();
+		
 		for (int i = 0; i < 24; i++) {
 			triangles.add(new Triangle(i + 1)); 
 		}
@@ -86,7 +88,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 			boolean isLegal = theLaw.canMove(triangle, triangle + (left ? move : - move));
 			boolean isBearingOff = theLaw.isLegalBearingOff(triangle, triangle + (left ? move : - move));
 			// The error is here
-			if (isLegal /*|| isBearingOff*/) {
+			if (isLegal || isBearingOff) {
 				legalMoveList.add(triangle + (left ? move : - move));
 			} 
 			
@@ -94,7 +96,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 		
 		// This removes duplicates
 		Set<Integer> legalSet = new LinkedHashSet<Integer>(legalMoveList);
-	//	System.out.println("" + roll.x + ":" + roll.y +":"+ legalSet.toString());
+		System.out.println("" + roll.x + ":" + roll.y +":"+ legalSet.toString());
 		return new ArrayList<Integer>(legalMoveList);
 	}
 	

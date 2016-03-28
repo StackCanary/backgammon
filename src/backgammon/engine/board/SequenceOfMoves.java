@@ -7,10 +7,11 @@ public class SequenceOfMoves {
 	
 	public List<Pair> moves = new ArrayList<Pair>();
 	
-	public SequenceOfMoves(Pair m1, Pair m2, Pair m3) {
+	public SequenceOfMoves(Pair m1, Pair m2, Pair m3, Pair m4) {
 		moves.add(m1);
 		moves.add(m2);
 		moves.add(m3);
+		moves.add(m4);
 		
 	}
 	
