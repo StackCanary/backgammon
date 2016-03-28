@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import backgammon.client.config.Config.Side;
 import backgammon.engine.ai.Scorable;
 
 public class DiceRollHolder implements Scorable {
@@ -51,23 +52,39 @@ public class DiceRollHolder implements Scorable {
 		}
 	}
 	
+	/*
+	 * Returns all the sequences that can be made from a given dice roll regardless of whether they are legal or not
+	 */
+	public List<SequenceOfMoves> getSequencesOfMoves (int from, Side side) {
+		boolean left = side == Side.white;
+		List<SequenceOfMoves> sequences = new ArrayList<SequenceOfMoves>();
+		Pair m1 = new Pair(from, from + (left ? - x : x));
+		Pair m2 = new Pair(from, from + (left ? - y : y));
+		Pair m3 = new Pair(from, from + (left ? - (x + y) : (x + y)));
+		
+		//You can play m1 and m2 in any order (m1 then m2)
+		SequenceOfMoves sequence1 = new SequenceOfMoves(m1, m2);
+		
+		//You can play m1 and m2 in any order (m2 then m1)
+		SequenceOfMoves sequence2 = new SequenceOfMoves(m2, m1);
+		
+		//This is the sum sequence where you add the dice
+		SequenceOfMoves sequence3 = new SequenceOfMoves(m3);
+		
+		sequences.add(sequence1);
+		sequences.add(sequence2);
+		sequences.add(sequence3);
+		
+		return sequences;
+	}
+	
 
 	@Override
-	public int getScore() {
+	public int getScore(Side max) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
-	@Override
-	public List<Scorable> getChildren(Scorable o) {
-		List<Scorable> result = new ArrayList<Scorable>();
-		for (int j = 1; j <= 6; j++) {
-			for (int i = 1; i <= 6; i++) {
-				result.add(new DiceRollHolder(i, j));
-			}
-		}
-		return result;
-	}
 	
 	
 	public static double getExpectedValue(int x, int y) {

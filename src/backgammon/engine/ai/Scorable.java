@@ -2,9 +2,10 @@ package backgammon.engine.ai;
 
 import java.util.List;
 
+import backgammon.client.config.Config.Side;
+
 public interface Scorable {
 	
-	public int getScore();
-	public List<Scorable> getChildren(Scorable o); 
+	public int getScore(Side max);
 
 }

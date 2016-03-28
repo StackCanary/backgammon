@@ -7,29 +7,24 @@ import backgammon.client.config.Config.Side;
 import backgammon.engine.ai.Scorable;
 import backgammon.engine.board.BasicBoard;
 import backgammon.engine.board.DiceRollHolder;
+import backgammon.engine.board.SequenceOfMoves;
 
 public class Node {
 	Node parent;
-	public Side side;
 	public int score;
-	public Scorable scorable;
+	BasicBoard board;
 	public boolean head;
 	List<Node> children = new ArrayList<Node>();
 	
 	
-	public Node(Scorable scorable, Node parent) {
-		this.scorable = scorable;
+	public Node(BasicBoard board, Node parent) {
 		this.parent = parent;
+		this.board = board;
 	}
 	
-	public Node(Scorable scorable, boolean head) {
-		this.scorable = scorable;
+	public Node(BasicBoard board, boolean head) {
+		this.board = board;
 		this.head = head;
-	}
-	
-	public Node() {
-		this.head = true;
-		scorable = new BasicBoard();
 	}
 	
 	public void add(Node node) {
@@ -55,40 +50,47 @@ public class Node {
 	}
 	
 	public void createChildren() {
-		List<Scorable> scorables;
-		if (head) {
-			scorables = scorable.getChildren(new DiceRollHolder(6, 6));
-		} else {
-			if (scorable instanceof BasicBoard) {
-				scorables = scorable.getChildren(getParent().scorable);
-			} else {
-				scorables = scorable.getChildren(null);
-			}
-		}
+		List<DiceRollHolder> allDiceRolls = getAllPossibleDiceRolls();
 		
-		for (Scorable s : scorables) {
-			add(new Node(s, this));
+		for (DiceRollHolder holder : allDiceRolls) {
+			for (int i = 0; i < 24; i++) {
+				if (!head) {
+					board.setDice(holder);
+				}
+				List<Integer> legalMoves = board.getPossibleMoves(1 + i, board.getDice());
+				List<SequenceOfMoves> sequencesList = board.getDice().getSequencesOfMoves(i + 1, board.getTurn());
+				for (SequenceOfMoves sequence : sequencesList) {
+					if (sequence.isSequenceLegal(board)) {
+						BasicBoard childBoard = sequence.play(board);
+						add(new Node(childBoard, false));
+						System.out.println("Sequence legal");
+					} 
+				}
+			}
 		}
 	}
  	
-	public int getScore() {
-		return scorable.getScore();
+	public int getScore(Side max) {
+		return board.getScore(max);
 	}
 	
 	public boolean isTerminal() {
-		if (scorable instanceof BasicBoard) {
-			return ((BasicBoard) scorable).hasEnded();
-		} else {
-			return false;
-		}
+		return board.hasEnded();
 	}
 	
 	public Side turn() {
-		if (scorable instanceof BasicBoard) {
-			return ((BasicBoard) scorable).getTurn();
-		} else {
-			return Side.chance;
-		}
+		return board.getTurn();
 	}
+
 	
+		
+		public List<DiceRollHolder> getAllPossibleDiceRolls() {
+			List<DiceRollHolder> result = new ArrayList<DiceRollHolder>();
+			for (int j = 1; j <= 3; j++) {
+				for (int i = 1; i <= 6; i++) {
+					result.add(new DiceRollHolder(i, j));
+				}
+			}
+			return result;
+		}
 }

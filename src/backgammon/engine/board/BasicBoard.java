@@ -15,20 +15,23 @@ public class BasicBoard implements BoardInterface, Scorable {
 	Side turn = Side.black;
 	private int blackCounters = 15;
 	private int whiteCounters = 15;
+	private int whiteScore = 0;
+	private int blackScore = 0;
 	DiceRollHolder diceHolder;
 	DiceRollEngine diceEngine = new DiceRollEngine();
 	boolean gameOver = false;
-
-	int score = 0; 
+	
 	private List<Integer> currentMoveRemaining;
 	
 	Legal theLaw;
+	private boolean autoDice = true;
 	
 	public BasicBoard(Side turn) {
 		setBoard();
 		theLaw = new Legal(this);
 		setDice(diceEngine.getNext());
 		this.turn = turn;
+		
 	}
 	
 	public BasicBoard() {
@@ -42,6 +45,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 		this.turn = turn;
 		theLaw = new Legal(this);
 		setDice(diceEngine.getNext());
+		
 	}
 	
 	public void setBoard() {
@@ -66,34 +70,36 @@ public class BasicBoard implements BoardInterface, Scorable {
 	@Override
 	public void drawNCountersAtTriangleT(int n, int i, Side side) {
 		TriangleInterface triangle = getTriangle(n);
+		triangle.setN(n);
 		triangle.setCount(i);
 		triangle.setSide(side);
+		
 	}
 	
 	@Override
 	public List<Integer> getPossibleMoves(int triangle, DiceRollHolder roll) {
 		Iterator<Integer> iterator = roll.options.iterator();
 		List<Integer> legalMoveList = new ArrayList<Integer>();
-		//System.out.println(triangle);
 		boolean left = (getTriangle(triangle).getSide() == Side.black);
 		while(iterator.hasNext()) {
 			int move = iterator.next();
 			boolean isLegal = theLaw.canMove(triangle, triangle + (left ? move : - move));
 			boolean isBearingOff = theLaw.isLegalBearingOff(triangle, triangle + (left ? move : - move));
-			if (isLegal || isBearingOff) {
+			// The error is here
+			if (isLegal /*|| isBearingOff*/) {
 				legalMoveList.add(triangle + (left ? move : - move));
 			} 
 			
-			
 		}
 		
+		// This removes duplicates
 		Set<Integer> legalSet = new LinkedHashSet<Integer>(legalMoveList);
+	//	System.out.println("" + roll.x + ":" + roll.y +":"+ legalSet.toString());
 		return new ArrayList<Integer>(legalMoveList);
 	}
 	
-	
 	enum Score {
-		noMove (0),
+		noMove (3),
 		move (1),
 		stack (2),
 		capture (4),
@@ -111,12 +117,46 @@ public class BasicBoard implements BoardInterface, Scorable {
 		
 	}
 	
+	public void updateScore(int score) {
+		if (this.turn == Side.black) {
+			blackScore += score;
+		} else {
+			whiteScore += score;
+		}
+	}
+	
 	public Side getTurn() {
 		return turn;
 	}
 
-	public int evaluate() {
-		return this.score;
+	public int evaluate(Side side) {
+		boolean flag = side == Side.black;
+		
+		int averageDistance = 0;
+		int averageDistanceCounter = 0;
+		int total = 0;
+		for (TriangleInterface triangle : getTriangles() ) {
+			int count;
+			if ((count = triangle.getCount()) > 0 && triangle.getSide() == side) {
+				 total += count;
+				 averageDistance += Math.abs(flag ? triangle.getN() : 24 - triangle.getN());
+				 averageDistanceCounter++;
+			}
+		}
+		
+		try {
+			averageDistance = averageDistance / (averageDistanceCounter + 1);
+		} catch (ArithmeticException e) {
+			averageDistance = 10;
+		}
+		
+		
+		if (total == 0) {
+			return 10000;
+		} else {
+			return averageDistance;
+		}
+		
 	}
 	
 	public boolean hasEnded() {
@@ -127,6 +167,11 @@ public class BasicBoard implements BoardInterface, Scorable {
 		this.diceHolder = holder;
 	}
 	
+	public void changeDice(DiceRollHolder holder) {
+		this.diceHolder = holder;
+		autoDice = false;
+	}
+	
 	public DiceRollHolder getDice() {
 		return this.diceHolder;
 	} 
@@ -135,10 +180,17 @@ public class BasicBoard implements BoardInterface, Scorable {
 		int myScore = 0;
 		
 		move(from1, to1);
-		myScore += score;
 		move(from2, to2);
-		myScore += score;
-		this.score = myScore;
+	}
+	
+	public void makeAllMoves(MoveHolder holder) {
+		
+		Iterator<Pair> moves = holder.moves.iterator();
+		while(moves.hasNext()) {
+			Pair currentMove = moves.next();
+			move(currentMove.pos, currentMove.end);
+		}
+		
 	}
 	
 	@Override
@@ -153,11 +205,9 @@ public class BasicBoard implements BoardInterface, Scorable {
 		List<Integer> legalMoves = getPossibleMoves(from, diceHolder);
 		
 		if (legalMoves.isEmpty()) {
-			this.score = Score.noMove.getScore();
+			updateScore(Score.noMove.getScore());
 		}
 		
-		System.out.println(from);
-		System.out.println(legalMoves);
 		capture = theLaw.isCapture(from, to);
 		bearOff = theLaw.isLegalBearingOff(from, to);
 		canMove = theLaw.canMove(from, to);
@@ -165,16 +215,16 @@ public class BasicBoard implements BoardInterface, Scorable {
 		if (legalMoves.contains(to)) {
 			if (bearOff) {
 				bearOff(from);
-				this.score = Score.bearOff.getScore();
+				updateScore(Score.bearOff.getScore());
 			} else if (capture) {
 				remove(from);
 				capture(to);
-				this.score = Score.capture.getScore();
+				updateScore(Score.capture.getScore());
 			} else {
 				getTriangle(to).setSide(getTriangle(from).getSide());
 				remove(from);
 				add(to);
-				this.score = Score.move.getScore();
+				updateScore(Score.move.getScore());
 			}
 			
 			diceHolder.clear(Math.abs(from - to));
@@ -184,9 +234,12 @@ public class BasicBoard implements BoardInterface, Scorable {
 		
 		if (diceHolder.options.isEmpty()) {
 			switchSide();
-			setDice(diceEngine.getNext());
+			if (autoDice) {
+				setDice(diceEngine.getNext());
+			}
 		}
 		
+		//System.out.println(evaluate(Side.black));
 		checkGameOver();
 		return true;
 	}
@@ -251,42 +304,8 @@ public class BasicBoard implements BoardInterface, Scorable {
 	}
 
 	@Override
-	public int getScore() {
-		return evaluate();
-	}
-
-	@Override
-	public List<Scorable> getChildren(Scorable o) {
-		DiceRollHolder myDiceRoll = (DiceRollHolder) o;
-		List<Scorable> boards = new ArrayList<Scorable>();
-		for (int i = 0; i < 23; i++ ) {
-			List<Integer> moves = this.getPossibleMoves(i + 1, myDiceRoll);
-			try {
-//				if (moves.size() == 2) {
-//					for (int move : moves) {
-//						BasicBoard board = new BasicBoard(this.getTriangles(), this.getTurn());
-//						board.move(i + 1, move);
-//						boards.add(board);
-//					}
-//				}
-				
-				if (moves.size() == 3) {
-					BasicBoard board1 = new BasicBoard(this.getTriangles(), this.getTurn());
-					System.out.println("Moving " + (i + 1) + "to" + moves.get(0));
-					board1.move(i + 1, moves.get(0));
-					board1.move(i + 1, moves.get(1));
-					boards.add(board1);
-					
-					BasicBoard board2 = new BasicBoard(this.getTriangles(), this.getTurn());
-					board1.move(i + 1, moves.get(2));
-					boards.add(board2);
-				}
-			} catch (Exception e) {
-				System.out.println("exception in DiceRollHolder");
-			}
-		}
-		
-		return boards;
+	public int getScore(Side max) {
+		return evaluate(max);
 	}
 
 

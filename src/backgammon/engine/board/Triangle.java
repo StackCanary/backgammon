@@ -36,13 +36,13 @@ public class Triangle implements TriangleInterface {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.count;
 	}
 
 	@Override
 	public Side getSide() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.side;
 	}
 	
 	@Override

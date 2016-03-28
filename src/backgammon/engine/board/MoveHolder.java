@@ -1,43 +1,31 @@
 package backgammon.engine.board;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MoveHolder {
 	
-	public int pos1;
-	public int end1;
-	
-	public int pos2;
-	public int end2;
-	
-	public int pos3;
-	public int end3;
-	
-	public int pos4;
-	public int end4;
+	List<Pair> moves;
 	
 	public boolean doubleRoll = false;
 	
 	
-	public MoveHolder(int pos1, int end1, int pos2, int end2) {
-		this.pos1 = pos1;
-		this.end1 = end1;
-		this.pos2 = pos2;
-		this.end2 = end2;
+	public MoveHolder(Pair m1, Pair m2) {
+		moves.add(m1);
+		moves.add(m2);
 	}
 	
 	
-	public MoveHolder(int pos1, int end1, int pos2, int end2, int pos3, int end3, int pos4, int end4) {
-		this.pos1 = pos1;
-		this.end1 = end1;
-		this.pos2 = pos2;
-		this.end2 = end2;
-		this.pos3 = pos3;
-		this.end3 = end3;
-		this.pos4 = pos4;
-		this.end4 = end4;
+	public MoveHolder(Pair m1, Pair m2, Pair m3, Pair m4) {
 		
 		doubleRoll = true;
 	}
-
+	
+	
+	public List<Pair> getList() {
+		return moves;
+	}
+ 
 
 
 	public String getMessage() {
@@ -45,11 +33,11 @@ public class MoveHolder {
 		
 		if (doubleRoll) {
 			result = String.format(
-					"(%d | %d), (%d | %d), (%d | %d), (%d | %d);", pos1, end1, pos2, end2, pos3, end3, pos4, end4
+					"(%d | %d), (%d | %d), (%d | %d), (%d | %d);", null
 					);
 		} else {
 			result = String.format(
-					"(%d | %d), (%d | %d);", pos1, end1, pos2, end2
+					"(%d | %d), (%d | %d);", null
 					);
 		}
 		return result;
