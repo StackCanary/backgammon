@@ -47,5 +47,25 @@ public class SequenceOfMoves {
 		
 		return board;
 	}
+	
 
+	/**
+	 * Returns a string in the format specified in the protocol 
+	 * @return
+	 */
+	public String getMessage() {
+		StringBuilder builder = new StringBuilder();
+		
+		for (Pair pair : moves) {
+			String pairString = String.format(
+					"(%d | %d), ", pair.pos, pair.end 
+					);
+			
+			builder.append(pairString);
+		}
+		
+		return builder.toString().replaceAll(",\\s+?$", ";");
+	}
+	
+	
 }

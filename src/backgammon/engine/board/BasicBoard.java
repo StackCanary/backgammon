@@ -12,6 +12,9 @@ import backgammon.engine.ai.Scorable;
 public class BasicBoard implements BoardInterface, Scorable {
 	List<TriangleInterface> triangles = new ArrayList<TriangleInterface>();
 	List<TriangleInterface> save;
+	
+	
+	
 	Side turn = Side.black;
 	private int blackCounters = 15;
 	private int whiteCounters = 15;

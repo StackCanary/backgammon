@@ -15,7 +15,7 @@ import backgammon.client.socket.Network;
  */
 public class GameController {
 	private TriangleController triangleController;
-	Network network = new Network();
+	//Network network = new Network();
 	private Event event;
 	
 	public GameController(TriangleController triangleController) {

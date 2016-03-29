@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import backgammon.client.control.TriangleController;
+import backgammon.game.setup.Setup;
 
 public class Client extends JFrame {
 	public BoardView gameview;
@@ -45,24 +46,6 @@ public class Client extends JFrame {
 		getContentPane().add(gameview);
 	}
 	
-	public static void main(String args[]) {
-		
-		if (args.length < 1) {
-			System.out.println("Usage: ");
-			System.out.println("[program] PvP");
-			System.out.println("[program] PvA");
-			System.out.println("[program] PvN");
-			return;
-		}
-		
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Client client = new Client();
-				client.setVisible(true);
-			}
-			
-		});
 	
-	}
 	
 }

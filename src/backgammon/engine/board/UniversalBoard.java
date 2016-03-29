@@ -9,9 +9,17 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Stream;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.player.Player;
 
 public class UniversalBoard extends BasicBoard {
 	Queue<MoveHolder> queue = new SynchronousQueue<MoveHolder>();
+	
+	Player player1;
+	Player player2;
+	
+	public UniversalBoard() {
+		super();
+	}
 	
 	public UniversalBoard(List<TriangleInterface> triangles, Side black) {
 		super(triangles, black);

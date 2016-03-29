@@ -30,9 +30,6 @@ public class Network {
 		}
 	}
 	
-	public Network() {
-		this("localhost", 3713);
-	}
 	
 	public void sendMessage(String message) {
 		try {
@@ -43,9 +40,6 @@ public class Network {
 		}
 	}
 	
-	public static void main(String[] args) {
-		Network n = new Network();
-		n.sendMessage("HELLO\n");
-	}
+
 	
 }
