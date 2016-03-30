@@ -1,11 +1,16 @@
 package backgammon.engine.board;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SequenceOfMoves {
 	
 	public List<Pair> moves = new ArrayList<Pair>();
+	
+	public SequenceOfMoves(List<Pair> pairs) {
+		moves.addAll(pairs);
+	}
 	
 	public SequenceOfMoves(Pair m1, Pair m2, Pair m3, Pair m4) {
 		moves.add(m1);
@@ -48,6 +53,14 @@ public class SequenceOfMoves {
 		return board;
 	}
 	
+	public List<Pair> getMoves() {
+		return moves;
+	}
+	
+	public Iterator<Pair> getIterator() {
+		return moves.iterator();
+	}
+	
 
 	/**
 	 * Returns a string in the format specified in the protocol 
@@ -64,7 +77,7 @@ public class SequenceOfMoves {
 			builder.append(pairString);
 		}
 		
-		return builder.toString().replaceAll(",\\s+?$", ";");
+		return builder.toString().replaceAll(",\\s*$", ";");
 	}
 	
 	

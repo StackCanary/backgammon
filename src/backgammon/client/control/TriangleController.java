@@ -18,9 +18,9 @@ import backgammon.engine.board.TriangleInterface;
 public class TriangleController implements BoardInterface{
 	
 	private List<TriangleInterface> triangles;
-	private BasicBoard board;
+	public BasicBoard board;
 	private GameController controller;
-	private SynchronousQueue<Event> eventQueue;
+	public SynchronousQueue<Event> eventQueue;
 	private List<Integer> highlighted = new ArrayList<Integer>();
 	public int lastClicked;
 	
@@ -118,6 +118,10 @@ public class TriangleController implements BoardInterface{
 		for (int i: getPossibleMoves(t, board.getDice())) {
 			highlightCounter(i);
 		}
+	}
+	
+	public GameController getGameController() {
+		return controller;
 	}
 
 	@Override

@@ -5,13 +5,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import backgammon.client.config.Config.Side;
+
 import backgammon.engine.ai.Scorable;
 
 public class DiceRollHolder implements Scorable {
 	public final int x;
 	public final int y;
 	public List<Integer> options = new ArrayList<Integer>();
-	
 	public DiceRollHolder(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -34,6 +34,10 @@ public class DiceRollHolder implements Scorable {
 			}
 		}); 
 		
+	}
+	
+	public String getMessage() {
+		return this.x + "-" +  this.y;
 	}
 	
 	public void clear(int i) {

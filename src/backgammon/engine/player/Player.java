@@ -1,14 +1,27 @@
 package backgammon.engine.player;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.Pair;
 import backgammon.engine.board.SequenceOfMoves;
 
 public interface Player {
 	
 	public Side getSide();
-	public boolean hasNextMove();
+	public void setSide(Side side);
+	
+	public boolean playsIndividualMoves();
+	public SequenceOfMoves getSequenceOfMoves();
 	public Pair getMove();
-	public void update(SequenceOfMoves sequencesOfMoves);
+	
+	public void updateThroughSequences(DiceRollHolder holder, SequenceOfMoves sequencesOfMoves);
+	void updateThroughMove(DiceRollHolder holder, Pair move);
+	
+	boolean playerReceivesIndividialMove();
+	boolean playerReceivesSequences();
+	
+	public DiceRollHolder getDiceRoll();
+	
+	public void error();
 	
 }

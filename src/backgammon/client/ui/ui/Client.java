@@ -19,7 +19,6 @@ import backgammon.game.setup.Setup;
 public class Client extends JFrame {
 	public BoardView gameview;
 	public JPanel menu;
-	
 	public Client() {
 		UI();
 	}
@@ -44,6 +43,20 @@ public class Client extends JFrame {
 	
 	public void boardview() {
 		getContentPane().add(gameview);
+	}
+	
+	public TriangleController getTriangleController() {
+		return gameview.getTriangleController();
+	}
+	
+	public void run() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Client client = new Client();
+				client.setVisible(true);
+			}
+			
+		});
 	}
 	
 	

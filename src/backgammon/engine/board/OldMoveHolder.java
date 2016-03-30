@@ -3,20 +3,20 @@ package backgammon.engine.board;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveHolder {
+public class OldMoveHolder {
 	
 	List<Pair> moves;
 	
 	public boolean doubleRoll = false;
 	
 	
-	public MoveHolder(Pair m1, Pair m2) {
+	public OldMoveHolder(Pair m1, Pair m2) {
 		moves.add(m1);
 		moves.add(m2);
 	}
 	
 	
-	public MoveHolder(Pair m1, Pair m2, Pair m3, Pair m4) {
+	public OldMoveHolder(Pair m1, Pair m2, Pair m3, Pair m4) {
 		
 		doubleRoll = true;
 	}

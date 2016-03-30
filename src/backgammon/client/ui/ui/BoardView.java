@@ -26,6 +26,7 @@ import backgammon.engine.board.TriangleInterface;
 public class BoardView extends JComponent {
 	private static final long serialVersionUID = 1L;
 	public TriangleController triangleController;
+	public SynchronousQueue<Event> eventQueue = new SynchronousQueue<Event>();
 	public List<Triangle> triangles = new ArrayList<Triangle>();
 	
 	public BoardView() {
@@ -73,6 +74,10 @@ public class BoardView extends JComponent {
 		add(spacer, gbc);
 		
 		
+	}
+	
+	public TriangleController getTriangleController() {
+		return triangleController;
 	}
 	
 	@Override

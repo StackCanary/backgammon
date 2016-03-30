@@ -1,32 +1,28 @@
 package backgammon.engine.board;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
-import java.util.stream.Stream;
 
 import backgammon.client.config.Config.Side;
 import backgammon.engine.player.Player;
 
 public class UniversalBoard extends BasicBoard {
-	Queue<MoveHolder> queue = new SynchronousQueue<MoveHolder>();
+	Queue<OldMoveHolder> queue = new SynchronousQueue<OldMoveHolder>();
 	
 	Player player1;
 	Player player2;
 	
-	public UniversalBoard() {
+	public UniversalBoard(Player player1, Player player2) {
 		super();
+		this.player1 = player1;
+		this.player2 = player2;
+		gameLoop();
 	}
 	
 	public UniversalBoard(List<TriangleInterface> triangles, Side black) {
 		super(triangles, black);
-	}
-
-	public void addToQueue(MoveHolder holder) {
-		queue.add(holder);
 	}
 	
 	public void gameLoop() {
@@ -36,16 +32,39 @@ public class UniversalBoard extends BasicBoard {
 			
 			@Override
 			public void run() {
+				List<Pair> sequencesOfMoves = new ArrayList<Pair>();
+				
 				while(!gameOver) {
-					MoveHolder holder;
-					while((holder = queue.poll()) != null) {
-						makeAllMoves(holder);
+					Player current = (player1.getSide() == getTurn()) ? player1 : player2;
+					Player other = (player1.getSide() == getTurn()) ? player2 : player1;
+					
+					
+					if (current.playsIndividualMoves()) {
+						Pair pair = current.getMove();
+						move(pair);
+						
+						if (other.playerReceivesSequences()) {
+			
+						}
+					} else {
+						SequenceOfMoves sequence = current.getSequenceOfMoves();
+						makeAllMoves(sequence);
+						
+						if (other.playerReceivesSequences()) {
+							other.updateThroughSequences(diceHolder, sequence);
+						}
 					}
+					
 				}				
 			}
 			
 		});
 		
 		t.run();
+	}
+	
+	
+	public void move(Pair pair) {
+		move(pair.pos, pair.end);
 	}
 }

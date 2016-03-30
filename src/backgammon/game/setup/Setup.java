@@ -1,7 +1,10 @@
 package backgammon.game.setup;
 
+import backgammon.client.socket.Network.NetworkT;
 import backgammon.client.ui.ui.Client;
+import backgammon.engine.board.UniversalBoard;
 import backgammon.engine.player.GUIPlayer;
+import backgammon.engine.player.NetworkPlayer;
 
 public class Setup {
 	public void GUIPlayervsGUIPlayer() {
@@ -24,12 +27,21 @@ public class Setup {
 		t.start();
 	}
 	
-	public void GUIPlayervsNetworkPlayer() {
+	public void GUIPlayervsNetworkPlayer(NetworkT role, String host, int port) {
 		Thread t = new Thread(
 				new Runnable() {
-					
 					@Override
 					public void run() {
+						NetworkPlayer networkPlayer;
+						GUIPlayer guiPlayer = new GUIPlayer();
+						
+						if (role == NetworkT.client) {
+							networkPlayer = new NetworkPlayer(host, port);
+						} else {
+							networkPlayer = new NetworkPlayer(port);
+						}
+						
+						UniversalBoard uBoard = new UniversalBoard(guiPlayer, networkPlayer);
 						
 					}
 					
@@ -54,11 +66,7 @@ public class Setup {
 	public static void main(String[] args) {
 		
 		if (args.length < 1) {
-			System.out.println("Usage: ");
-			System.out.println("[program] PvP");
-			System.out.println("[program] PvA");
-			System.out.println("[program] PCvNS");
-			
+			printUsage();
 			return;
 		}
 		
@@ -69,13 +77,34 @@ public class Setup {
 			setup.GUIPlayervsGUIPlayer();
 			break;
 		
-		case "PvN":
-			setup.GUIPlayervsNetworkPlayer();
+			//Start as Server or client
+		case "PvNs":
+			if (args.length > 2) {
+				printUsage();
+			} else {
+				setup.GUIPlayervsNetworkPlayer(NetworkT.server, "0", Integer.parseInt(args[1]));
+			}
+			break;
+		
+		case "PvNc":
+			if (args.length > 3) {
+				printUsage();
+			} else {
+				setup.GUIPlayervsNetworkPlayer(NetworkT.client, args[1], Integer.parseInt(args[2]));
+			}
 			break;
 			
 		default:
 			System.out.println("Incorrect arguments");
 		}
 		
+	}
+	
+	public static void printUsage() {
+		System.out.println("Usage: ");
+		System.out.println("[program] PvP");
+		System.out.println("[program] PvA");
+		System.out.println("[program] PvPs [port]");
+		System.out.println("[program] PvPc [host] [port]");
 	}
 }

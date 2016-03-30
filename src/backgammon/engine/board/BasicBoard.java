@@ -14,17 +14,19 @@ public class BasicBoard implements BoardInterface, Scorable {
 	List<TriangleInterface> save;
 	
 	
-	
 	Side turn = Side.black;
 	private int blackCounters = 15;
 	private int whiteCounters = 15;
 	private int whiteScore = 0;
 	private int blackScore = 0;
+	public boolean completedTurn; 
 	DiceRollHolder diceHolder;
 	DiceRollEngine diceEngine = new DiceRollEngine();
 	boolean gameOver = false;
 	
 	private List<Integer> currentMoveRemaining;
+	private List<Pair> history = new ArrayList<Pair>();
+	private SequenceOfMoves last;
 	
 	Legal theLaw;
 	private boolean autoDice = true;
@@ -188,9 +190,9 @@ public class BasicBoard implements BoardInterface, Scorable {
 		move(from2, to2);
 	}
 	
-	public void makeAllMoves(MoveHolder holder) {
+	public void makeAllMoves(SequenceOfMoves sequenceOfMoves) {
 		
-		Iterator<Pair> moves = holder.moves.iterator();
+		Iterator<Pair> moves = sequenceOfMoves.moves.iterator();
 		while(moves.hasNext()) {
 			Pair currentMove = moves.next();
 			move(currentMove.pos, currentMove.end);
@@ -217,7 +219,8 @@ public class BasicBoard implements BoardInterface, Scorable {
 		bearOff = theLaw.isLegalBearingOff(from, to);
 		canMove = theLaw.canMove(from, to);
 		
-		if (legalMoves.contains(to)) {
+		boolean played;
+		if (played = legalMoves.contains(to)) {
 			if (bearOff) {
 				bearOff(from);
 				updateScore(Score.bearOff.getScore());
@@ -233,12 +236,17 @@ public class BasicBoard implements BoardInterface, Scorable {
 			}
 			
 			diceHolder.clear(Math.abs(from - to));
+			history.add(new Pair(from, to));
 		} else {
 			System.out.println("Can't move from " + from + ":" + to);
 		}
 		
+		completedTurn = false;
+		
 		if (diceHolder.options.isEmpty()) {
 			switchSide();
+			completedTurn = true;
+			last = new SequenceOfMoves(history);
 			if (autoDice) {
 				setDice(diceEngine.getNext());
 			}
@@ -246,7 +254,15 @@ public class BasicBoard implements BoardInterface, Scorable {
 		
 		//System.out.println(evaluate(Side.black));
 		checkGameOver();
-		return true;
+		return played;
+	}
+	
+	public SequenceOfMoves getSequence() {
+		if (completedTurn) {
+			return last;
+		} else {
+			return null;
+		}
 	}
 	
 	@Override
