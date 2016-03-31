@@ -57,8 +57,6 @@ public class Protocol {
 		
 		while ((getMessage = network.getQueue().poll()) == null) {}
 		
-		System.out.println(getMessage);
-		
 		boolean result = (message.equals(getMessage));
 		if (!result) { 
 			throw new IncorrectNetworkMessageException(message, getMessage);

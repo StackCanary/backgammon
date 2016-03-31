@@ -80,6 +80,7 @@ public class Network {
 	
 	
 	public void sendMessage(String message) {
+		System.out.println("Sent: " + message);
 		writer.println(message);
 		writer.flush();
 	}
@@ -109,7 +110,7 @@ public class Network {
 						String message;
 						while((message = getMessage()) != null) {
 							try {
-								System.out.println(message);
+								System.out.println("Received: " + message);
 								queue.put(message);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block

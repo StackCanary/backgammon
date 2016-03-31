@@ -19,6 +19,7 @@ public class NetworkPlayer implements Player {
 	private Side side;
 	private DiceRollHolder myDice;
 	private SequenceOfMoves sequences;
+	
 	/**
 	 * Start as client
 	 * @param host
