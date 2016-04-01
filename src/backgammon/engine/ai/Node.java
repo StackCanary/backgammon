@@ -8,6 +8,11 @@ import backgammon.engine.board.BasicBoard;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.SequenceOfMoves;
 
+/**
+ * This class dynamically generates a tree as children are needed
+ * @author bobby
+ *
+ */
 public class Node {
 	Node parent;
 	public int score;

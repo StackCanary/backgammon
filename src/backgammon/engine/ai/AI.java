@@ -20,7 +20,6 @@ public class AI {
 			a = 10000;
 			for (Node child : node.getChildren()) {
 				a = min(a, minimax(child, depth-1, min, max));
-				System.out.println("min:" + a);
 			}
 			
 		}
@@ -29,7 +28,6 @@ public class AI {
 			a = -10000;
 			for (Node child : node.getChildren()) {
 				a = max(a, minimax(child, depth-1, min, max));
-			//	System.out.println("max:" + a);
 			}
 			
 		}
@@ -56,13 +54,13 @@ public class AI {
 		return 0;
 	}
 	
-	
-	public static void main(String[] args) {
-		AI ai = new AI();
-		BasicBoard board = new BasicBoard(Side.black);
-		board.setBoard();
-		Node node = new Node(board, true);
-		System.out.println("Minmax " + ai.minimax(node, 3, Side.black, Side.white));
-		
-	}
+//I have left this main method here to test out the ai
+//	public static void main(String[] args) {
+//		AI ai = new AI();
+//		BasicBoard board = new BasicBoard(Side.black);
+//		board.setBoard();
+//		Node node = new Node(board, true);
+//		System.out.println("Minmax " + ai.minimax(node, 3, Side.black, Side.white));
+//		
+//	}
 }

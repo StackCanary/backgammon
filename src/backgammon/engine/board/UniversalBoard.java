@@ -12,6 +12,11 @@ import backgammon.engine.player.NetworkPlayer;
 import backgammon.engine.player.Player;
 import backgammon.engine.player.PlayerPipe;
 
+/**
+ * This takes two players who implement the Player interface and allows them to play a game of Backgammon
+ * @author bobby
+ *
+ */
 public class UniversalBoard extends BasicBoard {
 
 	Player player1;
@@ -28,6 +33,9 @@ public class UniversalBoard extends BasicBoard {
 		super(triangles, black);
 	}
 
+	/**
+	 * Dispatch thread which plays the game between two Players
+	 */
 	public void gameLoop() {
 		Thread t = new Thread(
 				new Runnable() {
@@ -46,8 +54,6 @@ public class UniversalBoard extends BasicBoard {
 								Player save = current;
 								current = other;
 								other = save;
-								System.out.println(current);
-								System.out.println(other);
 							} else {
 								//Make sure the current player is the Network Player
 								current = players.getPlayer();
@@ -56,17 +62,6 @@ public class UniversalBoard extends BasicBoard {
 								flag = true;
 								
 							}
-							
-							if (current instanceof NetworkPlayer) {
-								System.out.println("Network player's turn");
-							}
-							
-							if (current instanceof TextPlayer) {
-								System.out.println("GUI player's turn");
-							}
-							
-							
-							System.out.println("LOOPING");
 							
 							if (!completedTurn) {
 

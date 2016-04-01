@@ -108,7 +108,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 		
 		// This removes duplicates
 		Set<Integer> legalSet = new LinkedHashSet<Integer>(legalMoveList);
-		System.out.println("" + roll.x + ":" + roll.y +":"+ legalSet.toString());
+		System.out.println("Dice-Roll:" + roll.x + ":" + roll.y +" Possible Moves:"+ legalSet.toString());
 		return new ArrayList<Integer>(legalMoveList);
 	}
 	

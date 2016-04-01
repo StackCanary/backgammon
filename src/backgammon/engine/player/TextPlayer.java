@@ -31,7 +31,7 @@ public class TextPlayer implements Player {
 		return side;
 	}
 
-	@Override
+	@Override 
 	public void setSide(Side side) {
 		this.side = side;
 	}
@@ -50,11 +50,7 @@ public class TextPlayer implements Player {
 		// TODO Auto-generated method stub
 		SequenceOfMoves move;
 		
-		System.out.println("Back in the TextPlayer");
-		
 		DiceAndSequencePair sequencePair =  textBoard.getInput();
-			
-		System.out.println("We return in TextPlayer to get a move from the player");
 		
 		return sequencePair;
 	}
@@ -80,7 +76,6 @@ public class TextPlayer implements Player {
 			textBoard.myBoard.move(pair.pos, pair.end);
 		}
 		
-		System.out.println("We return in TextPlayer to update");
 	}
 
 	/**

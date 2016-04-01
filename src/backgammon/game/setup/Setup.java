@@ -79,17 +79,6 @@ public class Setup {
 		t.start();
 	}
 	
-	public void AIPlayervsNetworkPlayer() {
-		
-	}
-	
-	public void AIPlayervsAIPlayer() {
-		
-	}
-	
-	public void NetworkPlayervsNetworkPlayer() {
-		
-	} 
 	
 	/**
 	 * Deals with command line arguments 
@@ -134,9 +123,13 @@ public class Setup {
 	
 	public static void printUsage() {
 		System.out.println("Usage: ");
-		System.out.println("[program] PvP");
-		System.out.println("[program] PvA");
-		System.out.println("[program] PvPs [port]");
-		System.out.println("[program] PvPc [host] [port]");
+		System.out.println("Start a GUI and play on the same Keyboard");
+		System.out.println("\t[program] PvP");
+		System.out.println();
+		System.out.println("Start a console based session as the server");
+		System.out.println("\t[program] PvPs [port]");
+		System.out.println();
+		System.out.println("Start a console based session as the client");
+		System.out.println("\t[program] PvPc [host] [port]");
 	}
 }

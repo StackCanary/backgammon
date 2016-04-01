@@ -68,7 +68,6 @@ public class NetworkPlayer implements Player {
 		if (skip) {
 			skip = false;
 			
-			System.out.println("Refusing move returns true");
 			return true;
 		} else {
 			return false;
@@ -77,7 +76,6 @@ public class NetworkPlayer implements Player {
 	
 	@Override
 	public void updateThroughSequences(DiceRollHolder holder, SequenceOfMoves sequencesOfMoves) {
-		System.out.println("Update is broken?");
 		myProtocol.sendTurn(holder, sequencesOfMoves);
 	}
 	
