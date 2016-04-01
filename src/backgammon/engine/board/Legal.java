@@ -49,8 +49,12 @@ public class Legal {
 		
 	}
 	
-	public boolean isLegalBearingOff(int from, int to) {
+	public boolean isLegalBearingOff(int from, int to, DiceRollHolder holder) {
 		TriangleInterface fromTriangle = board.getTriangle(from);
+		
+		if (holder.x < Math.abs(from - to) || holder.y < Math.abs(from - to)) {
+			return false;
+		}
 		
 		if (!areAllMyPiecesInTheBearingOffArea(board.getTriangle(from).getSide())) {
 			return false;

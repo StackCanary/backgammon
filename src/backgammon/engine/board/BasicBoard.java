@@ -95,7 +95,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 		while(iterator.hasNext()) {
 			int move = iterator.next();
 			boolean isLegal = theLaw.canMove(triangle, triangle + (left ? move : - move));
-			boolean isBearingOff = theLaw.isLegalBearingOff(triangle, triangle + (left ? move : - move));
+			boolean isBearingOff = theLaw.isLegalBearingOff(triangle, triangle + (left ? move : - move), roll);
 			// The error is here
 			if (isLegal || isBearingOff) {
 				legalMoveList.add(triangle + (left ? move : - move));
@@ -211,7 +211,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 		}
 		
 		capture = theLaw.isCapture(from, to);
-		bearOff = theLaw.isLegalBearingOff(from, to);
+		bearOff = theLaw.isLegalBearingOff(from, to, diceHolder);
 		canMove = theLaw.canMove(from, to);
 		
 		boolean played;
@@ -220,8 +220,12 @@ public class BasicBoard implements BoardInterface, Scorable {
 				bearOff(from);
 				updateScore(Score.bearOff.getScore());
 			} else if (capture) {
+				Side sideBeingCaptured = getTriangle(to).getSide();
 				remove(from);
 				capture(to);
+				int respawn = findClosest(sideBeingCaptured);
+				getTriangle(respawn).setSide(sideBeingCaptured);
+				add(respawn);
 				updateScore(Score.capture.getScore());
 			} else {
 				getTriangle(to).setSide(getTriangle(from).getSide());
@@ -248,6 +252,32 @@ public class BasicBoard implements BoardInterface, Scorable {
 		//System.out.println(evaluate(Side.black));
 		checkGameOver();
 		return played;
+	}
+	
+	private int findClosest(Side side) {
+		boolean flag = Side.white == side;
+		int j = 0;
+		for (int i = flag ? 24 : 0; flag  ? (i > 0) : (i < 24); j = flag ? (i--) : (i++) ) {
+			TriangleInterface triangle;
+			if (flag) {
+				triangle = getTriangle(i);
+				
+				if (triangle.getCount() > 0 || triangle.getSide() != side) {
+					return i;
+				}
+				
+			} else {
+				triangle = getTriangle(i + 1);
+				
+				if (triangle.getCount() > 0 || triangle.getSide() != side) {
+					return i + 1;
+				}
+			}
+			
+			
+		}
+		
+		return -1;
 	}
 	
 	public SequenceOfMoves getSequence() {

@@ -140,13 +140,18 @@ public class TriangleController implements BoardInterface{
 		boolean result = board.move(from, to);
 		System.out.println("Moving " + from + ":"+ to);
 		try {
-			drawNCountersAtTriangleT(from, board.getTriangle(from).getCount(), board.getTriangle(from).getSide());
-			drawNCountersAtTriangleT(to, board.getTriangle(to).getCount(), board.getTriangle(to).getSide());
+			redrawEntireBoard();
 		} catch (IndexOutOfBoundsException e){
 
 		}
 		
 		return result;
+	}
+	
+	public void redrawEntireBoard() {
+		for (int i = 0; i < 24; i ++) {
+			drawNCountersAtTriangleT(i + 1, board.getTriangle(i + 1).getCount(), board.getTriangle(i + 1).getSide());
+		}
 	}
 
 	@Override
