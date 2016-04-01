@@ -16,6 +16,10 @@ public class DiceRollHolder implements Scorable {
 		this.x = x;
 		this.y = y;
 		
+		reset();
+	}
+	
+	public void reset() {
 		this.options.add(x);
 		this.options.add(y);
 		this.options.add(x + y);
@@ -33,7 +37,6 @@ public class DiceRollHolder implements Scorable {
 				
 			}
 		}); 
-		
 	}
 	
 	public String getMessage() {
@@ -55,6 +58,8 @@ public class DiceRollHolder implements Scorable {
 			options.remove((Object) (x + y));
 		}
 	}
+	
+	
 	
 	/*
 	 * Returns all the sequences that can be made from a given dice roll regardless of whether they are legal or not

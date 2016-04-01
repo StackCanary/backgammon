@@ -16,13 +16,15 @@ import backgammon.client.socket.Network;
 public class GameController {
 	private TriangleController triangleController;
 	//Network network = new Network();
-	private Event event;
+	public Event event;
+	public SynchronousQueue<Event> queue;
 	
 	public GameController(TriangleController triangleController) {
 		this.triangleController = triangleController;
 	}
 	
 	public void dispatchEventThread(SynchronousQueue<Event> e) {
+		this.queue = e;
 		Thread t = new Thread(
 		new Runnable() {
 			
@@ -35,7 +37,7 @@ public class GameController {
 				
 				while(!quit) {
 						while((event = e.poll()) != null) {
-							
+							System.out.println("Received event");
 							if (event.hCircle != null) {
 								if (event.clicks == 1) {
 									triangleController.unhighlightAll();

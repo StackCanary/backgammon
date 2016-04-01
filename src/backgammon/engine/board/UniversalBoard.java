@@ -7,7 +7,10 @@ import java.util.Queue;
 import java.util.concurrent.SynchronousQueue;
 
 import backgammon.client.config.Config.Side;
+import backgammon.engine.player.GUIPlayer;
+import backgammon.engine.player.NetworkPlayer;
 import backgammon.engine.player.Player;
+import backgammon.engine.player.PlayerPipe;
 
 public class UniversalBoard extends BasicBoard {
 	Queue<OldMoveHolder> queue = new SynchronousQueue<OldMoveHolder>();
@@ -33,26 +36,62 @@ public class UniversalBoard extends BasicBoard {
 
 					@Override
 					public void run() {
-						List<Pair> sequencesOfMoves = new ArrayList<Pair>();
-
+						
+						PlayerPipe players = new PlayerPipe(player1, player2);
+						
+						boolean flag = false;
+						Player current, other = null;
+						DiceRollHolder savedDice = null;
+						SequenceOfMoves savedSequence = null;
 						while(!gameOver) {
-							Player current = (player1.getSide() == getTurn()) ? player1 : player2;
-							Player other = (player1.getSide() == getTurn()) ? player2 : player1;
-
-
+							if (flag) {
+								current = other;
+								other = players.getPlayer();
+							} else {
+								//Make sure the current player is the Network Player
+								current = players.getPlayer();
+								current = (current instanceof NetworkPlayer) ? current : players.getPlayer();
+								flag = true;
+								
+							}
+							
+							other = players.getPlayer();
+							System.out.println("LOOPING");
 							if (!completedTurn) {
 
 								try {
 									//Play individual moves
 									if (current.playsIndividualMoves()) {
-										Pair pair = current.getMove();
-										move(pair);
-
+										if (current.refuseMove()) {
+											continue;
+										} else {
+											Pair pair = current.getMove();
+											moveWithException(pair);
+										}
+										
+										
 									//Play a sequence of moves
 									} else {
-										SequenceOfMoves sequence = current.getSequenceOfMoves();
-										makeAllMoves(sequence);
-
+										if (current.refuseMove()) {
+											if (current instanceof NetworkPlayer) {
+												System.out.println("Skipping network player");
+											}
+											
+											if (current instanceof GUIPlayer) {
+												System.out.println("Skipping GUI player");
+											}
+											continue;
+										} else {
+											DiceAndSequencePair diceAndSequencePair = current.getDiceAndSequencePair();
+											savedDice = diceAndSequencePair.holder;
+											savedDice.reset();
+											
+											savedSequence = diceAndSequencePair.sequence;
+											
+											setDice(diceAndSequencePair.holder);
+											makeAllMoves(diceAndSequencePair.sequence);
+										}
+										
 									}
 
 								} catch (InvalidMoveException e) {
@@ -64,9 +103,11 @@ public class UniversalBoard extends BasicBoard {
 								
 								//At each completed turn update the other player
 								if (other.playerReceivesSequences()) {
-
+									//Pass the current sequence of moves and diceholder to the other Player
+									other.updateThroughSequences(savedDice, savedSequence);
 								}
 								
+								completedTurn = false;
 								
 								//We may have another if statement here if the other player receives moves
 								//but we can avoid this
@@ -80,11 +121,10 @@ public class UniversalBoard extends BasicBoard {
 
 		t.run();
 	}
+	
 
-
-	public void move(Pair pair) throws InvalidMoveException {
+	public void moveWithException(Pair pair) throws InvalidMoveException {
 		boolean madeMove = move(pair.pos, pair.end);
-
 		if (!madeMove) {
 			throw new InvalidMoveException(pair);
 		}
@@ -97,13 +137,15 @@ public class UniversalBoard extends BasicBoard {
 	 * @param sequenceOfMoves
 	 * @throws InvalidMoveException
 	 */
-	public void makeAllMoves(SequenceOfMoves sequenceOfMoves)throws InvalidMoveException {
+	public void makeAllMoves(SequenceOfMoves sequenceOfMoves) throws InvalidMoveException {
 
 		Iterator<Pair> moves = sequenceOfMoves.moves.iterator();
 		while(moves.hasNext()) {
 			Pair currentMove = moves.next();
-			move(currentMove);
+			moveWithException(currentMove);
 		}
+		
+		completedTurn = true;
 
 	}
 }

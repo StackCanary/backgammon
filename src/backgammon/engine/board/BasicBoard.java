@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import backgammon.client.config.Config.Side;
 import backgammon.engine.ai.Scorable;
@@ -27,6 +29,8 @@ public class BasicBoard implements BoardInterface, Scorable {
 	private List<Integer> currentMoveRemaining;
 	private List<Pair> history = new ArrayList<Pair>();
 	private SequenceOfMoves last;
+	
+	public ConcurrentLinkedQueue<DiceAndSequencePair> sequenceQueue = new ConcurrentLinkedQueue<DiceAndSequencePair>();
 	
 	Legal theLaw;
 	private boolean autoDice = true;
@@ -190,15 +194,6 @@ public class BasicBoard implements BoardInterface, Scorable {
 		move(from2, to2);
 	}
 	
-	public void makeAllMoves(SequenceOfMoves sequenceOfMoves) {
-		
-		Iterator<Pair> moves = sequenceOfMoves.moves.iterator();
-		while(moves.hasNext()) {
-			Pair currentMove = moves.next();
-			move(currentMove.pos, currentMove.end);
-		}
-		
-	}
 	
 	@Override
 	public boolean move(int from, int to) {
@@ -241,12 +236,10 @@ public class BasicBoard implements BoardInterface, Scorable {
 			System.out.println("Can't move from " + from + ":" + to);
 		}
 		
-		completedTurn = false;
 		
 		if (diceHolder.options.isEmpty()) {
 			switchSide();
-			completedTurn = true;
-			last = new SequenceOfMoves(history);
+				sequenceQueue.offer(new DiceAndSequencePair(getDice(), new SequenceOfMoves(history)));
 			if (autoDice) {
 				setDice(diceEngine.getNext());
 			}
@@ -258,11 +251,7 @@ public class BasicBoard implements BoardInterface, Scorable {
 	}
 	
 	public SequenceOfMoves getSequence() {
-		if (completedTurn) {
-			return last;
-		} else {
-			return null;
-		}
+		return last;
 	}
 	
 	@Override

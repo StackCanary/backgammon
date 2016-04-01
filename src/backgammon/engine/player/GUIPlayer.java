@@ -1,6 +1,7 @@
 package backgammon.engine.player;
 
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
 
 import backgammon.client.config.Config.Side;
@@ -10,6 +11,7 @@ import backgammon.client.control.TriangleController;
 import backgammon.client.ui.shape.EmptyCircle;
 import backgammon.client.ui.shape.HeadCircle;
 import backgammon.client.ui.ui.Client;
+import backgammon.engine.board.DiceAndSequencePair;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.Pair;
 import backgammon.engine.board.SequenceOfMoves;
@@ -17,19 +19,20 @@ import backgammon.engine.board.SequenceOfMoves;
 public class GUIPlayer implements Player {
 	private TriangleController tController;
 	private SynchronousQueue<Event> queue;
+	private ConcurrentLinkedQueue<SequenceOfMoves> moveQueue = new ConcurrentLinkedQueue<SequenceOfMoves>();
 	private Side side;
+	
+	private Client client;
 	
 	private Side currentTurn;
 	private Side saveTurn;
 	
 	public GUIPlayer() {
-		Client client = new Client();
-		client.run();
-		this.queue = client.gameview.eventQueue;
+		client = client.createUIAndgetReference();
 		this.tController = client.gameview.triangleController;
 		
-		currentTurn = client.gameview.triangleController.board.getTurn();
-		saveTurn = currentTurn;
+		//currentTurn = client.gameview.triangleController.board.getTurn();
+	//	saveTurn = currentTurn;
 	}
 
 	@Override
@@ -52,19 +55,20 @@ public class GUIPlayer implements Player {
 	}
 
 	@Override
-	public SequenceOfMoves getSequenceOfMoves() {
+	public DiceAndSequencePair getDiceAndSequencePair() {
+		// TODO Auto-generated method stub
 		SequenceOfMoves move;
-		while((move = tController.board.getSequence()) == null) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
-		return move;
+		System.out.println("Back in the GUIPlayer");
+		
+		DiceAndSequencePair sequencePair;
+		while((sequencePair = tController.board.sequenceQueue.poll()) == null) {
+			
+		}
+
+		return sequencePair;
 	}
+	
 
 	//Not supported
 	@Override
@@ -78,12 +82,18 @@ public class GUIPlayer implements Player {
 	 */
 	@Override
 	public void updateThroughSequences(DiceRollHolder holder, SequenceOfMoves sequencesOfMoves) {
+		
 		tController.board.changeDice(holder);
 		Iterator<Pair> iterator = sequencesOfMoves.getIterator();
 		while(iterator.hasNext()) {
 			Pair pair = iterator.next();
-			queue.add(new Event(new EmptyCircle(true, pair.pos, null), null));
-			queue.add(new Event( null, new HeadCircle(null, pair.end, null)));
+			tController.move(pair.pos, pair.end);
+			try {
+				tController.getGameController().queue.put(new Event(null, null));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -115,6 +125,12 @@ public class GUIPlayer implements Player {
 	public void error() {
 		// TODO Auto-generated method stub
 	}
+
+	@Override
+	public boolean refuseMove() {
+		return false;
+	}
+
 
 	
 	

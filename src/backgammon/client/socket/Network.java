@@ -26,9 +26,9 @@ public class Network {
 	
 	private SynchronousQueue<String> queue = new SynchronousQueue<String>();
 	
-	NetworkT myRole;
+	NetworkRole myRole;
 	
-	public static enum NetworkT {
+	public static enum NetworkRole {
 		client,
 		server,
 	}
@@ -39,7 +39,7 @@ public class Network {
 	 * @param port
 	 */
 	public Network(String host, int port) {
-		this.myRole = NetworkT.client;
+		this.myRole = NetworkRole.client;
 		this.host = host;
 		this.port = port;
 		
@@ -60,7 +60,7 @@ public class Network {
 	 * @param port
 	 */
 	public Network(int port) {
-		this.myRole = NetworkT.server;
+		this.myRole = NetworkRole.server;
 		this.port = port;
 		
 		

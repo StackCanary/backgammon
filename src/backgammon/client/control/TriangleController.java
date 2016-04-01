@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config.Side;
 import backgammon.client.ui.shape.Triangle;
+import backgammon.client.ui.ui.BoardView;
 import backgammon.engine.board.BasicBoard;
 import backgammon.engine.board.BoardInterface;
 import backgammon.engine.board.DiceRollHolder;
@@ -21,8 +22,13 @@ public class TriangleController implements BoardInterface{
 	public BasicBoard board;
 	private GameController controller;
 	public SynchronousQueue<Event> eventQueue;
+	private BoardView boardview;
 	private List<Integer> highlighted = new ArrayList<Integer>();
 	public int lastClicked;
+	
+	public void setBoardView(BoardView boardview) {
+		this.boardview = boardview;
+	}
 	
 	public TriangleController(List<Triangle> triangles) {
 		this.triangles = triangles.stream().map(x -> (TriangleInterface) x).collect(Collectors.toList());
@@ -139,6 +145,7 @@ public class TriangleController implements BoardInterface{
 		} catch (IndexOutOfBoundsException e){
 
 		}
+		
 		return result;
 	}
 

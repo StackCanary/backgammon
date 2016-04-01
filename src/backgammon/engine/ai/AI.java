@@ -10,6 +10,7 @@ public class AI {
 		
 	}
 	
+	
 	public int minimax(Node node, int depth, Side min, Side max) {
 		if (node.isTerminal() || depth == 0) {
 			return node.getScore(max);

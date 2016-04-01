@@ -1,6 +1,6 @@
 package backgammon.game.setup;
 
-import backgammon.client.socket.Network.NetworkT;
+import backgammon.client.socket.Network.NetworkRole;
 import backgammon.client.ui.ui.Client;
 import backgammon.engine.board.UniversalBoard;
 import backgammon.engine.player.GUIPlayer;
@@ -27,7 +27,7 @@ public class Setup {
 		t.start();
 	}
 	
-	public void GUIPlayervsNetworkPlayer(NetworkT role, String host, int port) {
+	public void GUIPlayervsNetworkPlayer(NetworkRole role, String host, int port) {
 		Thread t = new Thread(
 				new Runnable() {
 					@Override
@@ -35,7 +35,7 @@ public class Setup {
 						NetworkPlayer networkPlayer;
 						GUIPlayer guiPlayer = new GUIPlayer();
 						
-						if (role == NetworkT.client) {
+						if (role == NetworkRole.client) {
 							networkPlayer = new NetworkPlayer(host, port);
 						} else {
 							networkPlayer = new NetworkPlayer(port);
@@ -82,7 +82,7 @@ public class Setup {
 			if (args.length > 2) {
 				printUsage();
 			} else {
-				setup.GUIPlayervsNetworkPlayer(NetworkT.server, "0", Integer.parseInt(args[1]));
+				setup.GUIPlayervsNetworkPlayer(NetworkRole.server, "0", Integer.parseInt(args[1]));
 			}
 			break;
 		
@@ -90,7 +90,7 @@ public class Setup {
 			if (args.length > 3) {
 				printUsage();
 			} else {
-				setup.GUIPlayervsNetworkPlayer(NetworkT.client, args[1], Integer.parseInt(args[2]));
+				setup.GUIPlayervsNetworkPlayer(NetworkRole.client, args[1], Integer.parseInt(args[2]));
 			}
 			break;
 			

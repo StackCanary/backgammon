@@ -73,7 +73,7 @@ public class BoardView extends JComponent {
 		gbc.gridy = 1;
 		add(spacer, gbc);
 		
-		
+		triangleController.setBoardView(this);
 	}
 	
 	public TriangleController getTriangleController() {

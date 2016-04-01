@@ -5,20 +5,21 @@ import java.util.List;
 
 import backgammon.client.config.Config.Side;
 import backgammon.client.socket.Network;
-import backgammon.client.socket.Network.NetworkT;
-import backgammon.client.socket.NetworkConstants;
+import backgammon.client.socket.Network.NetworkRole;
 import backgammon.client.socket.Protocol;
+import backgammon.engine.board.DiceAndSequencePair;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.Pair;
 import backgammon.engine.board.SequenceOfMoves;
 
 public class NetworkPlayer implements Player {
-	private NetworkT myRole;
+	private NetworkRole myRole;
 	private Network myNetworkManager;
 	private Protocol myProtocol;
 	private Side side;
 	private DiceRollHolder myDice;
 	private SequenceOfMoves sequences;
+	private boolean skip = false;
 	
 	/**
 	 * Start as client
@@ -26,11 +27,11 @@ public class NetworkPlayer implements Player {
 	 * @param port
 	 */
 	public NetworkPlayer(String host, int port) {
-		this.myRole = NetworkT.client;
+		this.myRole = NetworkRole.client;
 		myNetworkManager = new Network(host, port);
 		myProtocol = new Protocol(myNetworkManager);
 		
-		
+		this.skip = true;
 	}
 	
 	
@@ -39,7 +40,7 @@ public class NetworkPlayer implements Player {
 	 * @param port
 	 */
 	public NetworkPlayer(int port) {
-		this.myRole = NetworkT.server;
+		this.myRole = NetworkRole.server;
 		myNetworkManager = new Network(port);
 		myProtocol = new Protocol(myNetworkManager);
 	}
@@ -51,17 +52,33 @@ public class NetworkPlayer implements Player {
 	}
 	
 	@Override
-	public SequenceOfMoves getSequenceOfMoves() {
+	public DiceAndSequencePair getDiceAndSequencePair() {
+		System.out.println("In network");
 		return myProtocol.getTurn();
 	}
 	
+	//Not s
 	@Override
 	public Pair getMove() {
-		if (!sequences.getMoves().isEmpty()) {
-			return sequences.getMoves().remove(0);
+//		if (!sequences.getMoves().isEmpty()) {
+//			return sequences.getMoves().remove(0);
+//		} else {
+//			sequences = myProtocol.getTurn();
+//			return null;
+//		}
+		
+		return null;
+	}
+	
+	@Override
+	public boolean refuseMove() {
+		if (skip) {
+			skip = false;
+			
+			System.out.println("Refusing move returns true");
+			return true;
 		} else {
-			sequences = myProtocol.getTurn();
-			return null;
+			return false;
 		}
 	}
 	
@@ -112,6 +129,8 @@ public class NetworkPlayer implements Player {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 	
 	
 	

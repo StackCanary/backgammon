@@ -1,8 +1,10 @@
 package backgammon.client.socket;
 
-import backgammon.client.socket.Network.NetworkT;
+import backgammon.client.socket.Network.NetworkRole;
 import backgammon.client.socket.NetworkConstants.ClientProtocol;
 import backgammon.client.socket.NetworkConstants.ServerProtocol;
+import backgammon.engine.board.DiceAndSequencePair;
+import backgammon.engine.board.DiceRollEngine;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.SequenceOfMoves;
 
@@ -13,7 +15,7 @@ public class Protocol {
 	private Network network;
 	public Protocol(Network network) {
 		this.network = network;
-		if (network.myRole == NetworkT.client) { init_as_client(); } else { init_as_server(); }
+		if (network.myRole == NetworkRole.client) { init_as_client(); } else { init_as_server(); }
 	}
 
 	
@@ -23,6 +25,8 @@ public class Protocol {
 			expect(ServerProtocol.hello.getMessage());
 			network.sendMessage(ClientProtocol.newgame.getMessage());
 			expect(ServerProtocol.ready.getMessage());
+			
+			
 		} catch (IncorrectNetworkMessageException e) {
 			System.out.println(e.getMessage());
 		}
@@ -43,9 +47,11 @@ public class Protocol {
 		network.sendMessage(ClientProtocol.diceMessage(holder, moves));
 	}
 	
-	public SequenceOfMoves getTurn() {
-		String message = network.getMessage();
-		return ServerProtocol.parseDiceMessageIntoSequence(message);
+	public DiceAndSequencePair getTurn() {
+		String getMessage;
+		while ((getMessage = network.getQueue().poll()) == null) {}
+		System.out.println("Got turn " + getMessage);
+		return new DiceAndSequencePair(ServerProtocol.parseDiceMessageIntoDiceRoll(getMessage), ServerProtocol.parseDiceMessageIntoSequence(getMessage));
 	}
 	
 	public void terminate() {

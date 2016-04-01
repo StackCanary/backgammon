@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.sound.midi.ControllerEventListener;
 import javax.swing.BorderFactory;
@@ -49,16 +53,39 @@ public class Client extends JFrame {
 		return gameview.getTriangleController();
 	}
 	
-	public void run() {
+	public static Client run() {
+		final Client client = new Client();
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Client client = new Client();
 				client.setVisible(true);
 			}
 			
 		});
+		
+		return client;
 	}
 	
+	//http://stackoverflow.com/questions/9148899/
+	public static Client createUIAndgetReference() {
+	    Client x = null;
+	    ExecutorService service = Executors.newSingleThreadExecutor();
+	    Future<Client> result = service.submit(new Callable<Client>() {
+	        public Client call() throws Exception {
+	        	Client client = new Client();
+	        	client.setVisible(true);
+	            // the other thread
+	            return client;
+	        }
+	    });
+	    try {
+	        x = result.get();
+	    } catch (Exception e) {
+	        // failed
+	    }
+	    service.shutdown();
+		return x;
+	}
 	
 	
 }
