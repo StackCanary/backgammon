@@ -21,7 +21,12 @@ import backgammon.client.ui.shape.JDummy;
 import backgammon.client.ui.shape.Triangle;
 import backgammon.engine.board.TriangleInterface;
 
-
+/**
+ * This class contains the logic for drawing the triangles. It uses a GridBagLayout manager to manage the layout.
+ * 
+ * @author bobby
+ *
+ */
 //http://stackoverflow.com/questions/1466240/
 public class BoardView extends JComponent {
 	private static final long serialVersionUID = 1L;
@@ -33,9 +38,11 @@ public class BoardView extends JComponent {
 		setBackground(Color.red);
 		setLayout(new GridBagLayout());
 		
+		//instantiate triangle controller which allows you control the individual triangles
 		triangleController = new TriangleController();
 		SynchronousQueue<Event> eventQueue = new SynchronousQueue<Event>();
 		
+		// Draw all 24 triangles
 		GridBagConstraints gbc;
 		for (int i = 1; i <= 6 * 4; i++) {
 			Triangle triangle = new Triangle(i, eventQueue);
@@ -60,10 +67,14 @@ public class BoardView extends JComponent {
 			triangles.add(triangle);
 		}
 		
+		//pass the triangles (so it can control them) and the eventQueue which will be passed to the buttons
+		//for mouse actions
 		triangleController.setTriangles(triangles);
 		triangleController.setEvent(eventQueue);
+		//draw the initial board
 		triangleController.drawInitBoard();
 		
+		//Create spacer 
 		JDummy spacer = new JDummy();
 		Dimension size = new Dimension(40, 80);
 		spacer.setMinimumSize(size);

@@ -1,4 +1,4 @@
-package backgammon.client.socket;
+package backgammon.network;
 
 import java.awt.Color;
 import java.util.ArrayList;

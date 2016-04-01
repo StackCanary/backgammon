@@ -1,12 +1,12 @@
-package backgammon.client.socket;
+package backgammon.network;
 
-import backgammon.client.socket.Network.NetworkRole;
-import backgammon.client.socket.NetworkConstants.ClientProtocol;
-import backgammon.client.socket.NetworkConstants.ServerProtocol;
 import backgammon.engine.board.DiceAndSequencePair;
 import backgammon.engine.board.DiceRollEngine;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.SequenceOfMoves;
+import backgammon.network.Network.NetworkRole;
+import backgammon.network.NetworkConstants.ClientProtocol;
+import backgammon.network.NetworkConstants.ServerProtocol;
 
 /*
  * Make a class that sends the init stuffs and processes the messages

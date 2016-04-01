@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import backgammon.client.config.Config.Side;
-import backgammon.client.socket.Network;
-import backgammon.client.socket.Network.NetworkRole;
-import backgammon.client.socket.Protocol;
 import backgammon.engine.board.DiceAndSequencePair;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.Pair;
 import backgammon.engine.board.SequenceOfMoves;
+import backgammon.network.Network;
+import backgammon.network.Protocol;
+import backgammon.network.Network.NetworkRole;
 
 public class NetworkPlayer implements Player {
 	private NetworkRole myRole;
@@ -57,16 +57,9 @@ public class NetworkPlayer implements Player {
 		return myProtocol.getTurn();
 	}
 	
-	//Not s
+	//Not supported
 	@Override
 	public Pair getMove() {
-//		if (!sequences.getMoves().isEmpty()) {
-//			return sequences.getMoves().remove(0);
-//		} else {
-//			sequences = myProtocol.getTurn();
-//			return null;
-//		}
-		
 		return null;
 	}
 	

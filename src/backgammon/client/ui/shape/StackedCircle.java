@@ -10,6 +10,12 @@ import javax.swing.JTextField;
 import backgammon.client.config.Config.Side;
 import backgammon.client.control.Event;
 
+/**
+ * Stackable clickable circle which shows a small number on it to
+ * show how many circles it represents
+ * @author bobby
+ *
+ */
 public class StackedCircle extends HeadCircle {
 	private static final long serialVersionUID = 1L;
 	private int n;

@@ -5,6 +5,12 @@ import java.util.List;
 
 import backgammon.client.config.Config.Side;
 
+/**
+ * This can be used to determine what type a given move is (e.g. a capture) 
+ * It can also determine if that move is legal for a given board
+ * @author bobby
+ *
+ */
 public class Legal {
 	
 	private BasicBoard board;
@@ -15,7 +21,12 @@ public class Legal {
 		triangles = board.getTriangles();
 		
 	}
-	
+	/**
+	 * Returns true if legal capture
+	 * @param from
+	 * @param to
+	 * @return
+	 */
 	public boolean isCapture(int from, int to) {
 	
 		
@@ -31,6 +42,11 @@ public class Legal {
 		return false;
 	}
 	
+	/**
+	 * Returns true if all the pieces that are being beared off in the correct area
+	 * @param side
+	 * @return
+	 */
 	private boolean areAllMyPiecesInTheBearingOffArea(Side side) {
 		boolean flag = side == Side.black;
 		
@@ -49,6 +65,13 @@ public class Legal {
 		
 	}
 	
+	/**
+	 * Returns true on a legal bearing off
+	 * @param from
+	 * @param to
+	 * @param holder
+	 * @return
+	 */
 	public boolean isLegalBearingOff(int from, int to, DiceRollHolder holder) {
 		TriangleInterface fromTriangle = board.getTriangle(from);
 		
@@ -75,6 +98,12 @@ public class Legal {
 		
 	}
 	
+	/**
+	 * Returns true if can move (from -> to)
+	 * @param from
+	 * @param to
+	 * @return
+	 */
 	public boolean canMove(int from, int to) {
 		boolean left = (board.turn == Side.black);
 		

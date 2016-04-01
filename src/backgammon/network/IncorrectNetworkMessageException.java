@@ -1,4 +1,4 @@
-package backgammon.client.socket;
+package backgammon.network;
 
 public class IncorrectNetworkMessageException extends Exception {
 

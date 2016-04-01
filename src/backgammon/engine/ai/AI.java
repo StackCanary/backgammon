@@ -2,7 +2,6 @@ package backgammon.engine.ai;
 
 import backgammon.client.config.Config.Side;
 import backgammon.engine.board.BasicBoard;
-import backgammon.engine.datastructure.Node;
 
 public class AI {
 	

@@ -8,9 +8,15 @@ import backgammon.client.config.Config.Side;
 
 import backgammon.engine.ai.Scorable;
 
+/**
+ * 
+ * @author bobby
+ *
+ */
 public class DiceRollHolder implements Scorable {
 	public final int x;
 	public final int y;
+	private boolean doubleDice = false;
 	public List<Integer> options = new ArrayList<Integer>();
 	public DiceRollHolder(int x, int y) {
 		this.x = x;
@@ -23,6 +29,18 @@ public class DiceRollHolder implements Scorable {
 		this.options.add(x);
 		this.options.add(y);
 		this.options.add(x + y);
+		
+		//Double roll case
+		if (this.x == this.y) {
+			this.doubleDice = true;
+			this.options.add(x);
+			this.options.add(y);
+			this.options.add(x + y);
+			
+			this.options.add(x);
+			this.options.add(y);
+			this.options.add(x + y);
+		}
 		
 		this.options.sort(new Comparator<Integer>() {
 
@@ -44,8 +62,11 @@ public class DiceRollHolder implements Scorable {
 	}
 	
 	public void clear(int i) {
+		
 		if (i == x + y) {
-			options.clear();
+			options.remove((Object) i);
+			options.remove((Object) (x));
+			options.remove((Object) (y));
 		}
 		
 		if (i == x) { 

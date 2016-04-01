@@ -1,16 +1,32 @@
 package backgammon.game.setup;
 
-import backgammon.client.socket.Network.NetworkRole;
 import backgammon.client.ui.ui.Client;
 import backgammon.engine.board.UniversalBoard;
 import backgammon.engine.player.TextPlayer;
+import backgammon.network.Network.NetworkRole;
 import backgammon.engine.player.NetworkPlayer;
 
+/**
+ * This package contains the main method. It is a factory for setting up a game with its needed parameters. 
+ * An example of this would be passing classes that implement the Player class.
+ * 
+ * 
+ * This class also takes in command line arguments
+ * @author bobby
+ *
+ */
 public class Setup {
+	
+	/**
+	 * Start GUIPlayer vs GUIPlayer in which you can play on the same keyboard
+	 */
 	public void GUIPlayervsGUIPlayer() {
 		Thread t = new Thread(
 				new Runnable() {
 					
+					/**
+					 * Launch thread using Swing's invokeLater to launch Client
+					 */
 					@Override
 					public void run() {
 						javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -27,7 +43,19 @@ public class Setup {
 		t.start();
 	}
 	
-	public void GUIPlayervsNetworkPlayer(NetworkRole role, String host, int port) {
+	/**
+	 * Start TextClient vs NetworkPlayer in a networking based match
+	 * 
+	 * @param role
+	 * @param host
+	 * @param port
+	 */
+	public void TextPlayervsNetworkPlayer(NetworkRole role, String host, int port) {
+		
+		/**
+		 * Launch thread that instantiates the network player, the text player and 
+		 * then passes them to the universal board
+		 */
 		Thread t = new Thread(
 				new Runnable() {
 					@Override
@@ -63,6 +91,10 @@ public class Setup {
 		
 	} 
 	
+	/**
+	 * Deals with command line arguments 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		if (args.length < 1) {
@@ -82,7 +114,7 @@ public class Setup {
 			if (args.length > 2) {
 				printUsage();
 			} else {
-				setup.GUIPlayervsNetworkPlayer(NetworkRole.server, "0", Integer.parseInt(args[1]));
+				setup.TextPlayervsNetworkPlayer(NetworkRole.server, "0", Integer.parseInt(args[1]));
 			}
 			break;
 		
@@ -90,7 +122,7 @@ public class Setup {
 			if (args.length > 3) {
 				printUsage();
 			} else {
-				setup.GUIPlayervsNetworkPlayer(NetworkRole.client, args[1], Integer.parseInt(args[2]));
+				setup.TextPlayervsNetworkPlayer(NetworkRole.client, args[1], Integer.parseInt(args[2]));
 			}
 			break;
 			

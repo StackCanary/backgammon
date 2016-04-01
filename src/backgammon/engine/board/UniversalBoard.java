@@ -13,7 +13,6 @@ import backgammon.engine.player.Player;
 import backgammon.engine.player.PlayerPipe;
 
 public class UniversalBoard extends BasicBoard {
-	Queue<OldMoveHolder> queue = new SynchronousQueue<OldMoveHolder>();
 
 	Player player1;
 	Player player2;

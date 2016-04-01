@@ -1,10 +1,9 @@
-package backgammon.engine.datastructure;
+package backgammon.engine.ai;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import backgammon.client.config.Config.Side;
-import backgammon.engine.ai.Scorable;
 import backgammon.engine.board.BasicBoard;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.SequenceOfMoves;

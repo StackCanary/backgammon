@@ -18,6 +18,11 @@ import backgammon.client.control.Event;
 import backgammon.client.control.TriangleController;
 import backgammon.engine.board.TriangleInterface;
 
+/**
+ * This class draws a triangle and its Circles
+ * @author bobby
+ *
+ */
 public class Triangle extends JComponent implements TriangleInterface {
 	private static final long serialVersionUID = 1L;
 
@@ -35,13 +40,23 @@ public class Triangle extends JComponent implements TriangleInterface {
 		this.eventQueue = event;
 	}
 	
-	
+	/**
+	 * Takes the triangles position, its side (Black/White) and an event queue which is
+	 *  passed to the Circles for clicking events
+	 * @param i
+	 * @param side
+	 * @param event
+	 */
 	public Triangle(int i, Side side, SynchronousQueue<Event> event) {
 		this.n = i;
 		this.side = side;
 		this.eventQueue = event;
 	}
 	
+	/**
+	 * Draws a black or orange triangle
+	 * Draws them on both the top and the bottom (see the use of ternary expression)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -60,14 +75,25 @@ public class Triangle extends JComponent implements TriangleInterface {
 
 	}
 	
+	/**
+	 * Clear triangle
+	 */
 	public void empty() {
 		removeAll();
 	}
 	
+	/**
+	 * Return if the to most circle is clicked
+	 * @return
+	 */
 	public boolean isHeadClicked() {
 		return head.clicked;
 	}
 	
+	/**
+	 * Draw N circles, stack them if necessary
+	 * @param n
+	 */
 	public void drawCircles(int n) {
 		empty();
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -149,6 +175,10 @@ public class Triangle extends JComponent implements TriangleInterface {
 		revalidate();
 	}
 	
+	/**
+	 * Highlight a particular amount
+	 * @param n
+	 */
 	public void highlight(int n) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		boolean flag = n > 4;
@@ -190,11 +220,17 @@ public class Triangle extends JComponent implements TriangleInterface {
 		revalidate();
 	}
 	
+	/**
+	 * Highlights the next circle in a set of circles
+	 */
 	public void highlightNext() {
 		this.predictedHighlighted = true;
 		highlight(this.counters);
 	}
 	
+	/**
+	 * Unhighlights a triangle
+	 */
 	public void unhighlight() {
 		this.predictedHighlighted = false;
 		drawCircles(this.counters);
@@ -209,6 +245,9 @@ public class Triangle extends JComponent implements TriangleInterface {
 		repaint();
 	}
 	
+	/**
+	 * Flips the color of the circles
+	 */
 	public void switchSide() {
 		this.side = (this.side == Side.black) ? Side.white : Side.black;
 		repaint();

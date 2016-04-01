@@ -1,9 +1,12 @@
 package backgammon.engine.board;
 
-import org.w3c.dom.views.AbstractView;
-
 import backgammon.client.config.Config.Side;
 
+/**
+ * The simplest implementation of a Client
+ * @author bobby
+ *
+ */
 public class Triangle implements TriangleInterface {
 	int n;
 	public int count;

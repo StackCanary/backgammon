@@ -11,10 +11,13 @@ import java.util.concurrent.SynchronousQueue;
 import backgammon.client.config.Config.Side;
 import backgammon.engine.ai.Scorable;
 
+/**
+ * An implementation of Backgammon 
+ * See Move and GetPossibleMoves
+ */
 public class BasicBoard implements BoardInterface, Scorable {
 	List<TriangleInterface> triangles = new ArrayList<TriangleInterface>();
 	List<TriangleInterface> save;
-	
 	
 	Side turn = Side.black;
 	private int blackCounters = 15;

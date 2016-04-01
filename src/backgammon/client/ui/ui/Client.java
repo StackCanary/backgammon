@@ -27,6 +27,9 @@ public class Client extends JFrame {
 		UI();
 	}
 	
+	/**
+	 * Draw a frame 640x460, the outer most window
+	 */
 	public void UI() {
 		setTitle("Backgammon");
 		setSize(640,460);
@@ -45,14 +48,25 @@ public class Client extends JFrame {
 		
 	}
 	
+	/**
+	 * Add Jpanel to children of window
+	 */
 	public void boardview() {
 		getContentPane().add(gameview);
 	}
 	
+	/**
+	 * Returns TriangleController which controls triangles
+	 * @return
+	 */
 	public TriangleController getTriangleController() {
 		return gameview.getTriangleController();
 	}
 	
+	/**
+	 * A run method which instantiates the client and launches it in another thread
+	 * @return
+	 */
 	public static Client run() {
 		final Client client = new Client();
 		
@@ -66,6 +80,12 @@ public class Client extends JFrame {
 		return client;
 	}
 	
+	/**
+	 * Returns a reference to the Client after it has been instantiated, 
+	 * deals with the threading issues by waiting for to instantiate and blocking
+	 * until it has instantiated
+	 * @return
+	 */
 	//http://stackoverflow.com/questions/9148899/
 	public static Client createUIAndgetReference() {
 	    Client x = null;

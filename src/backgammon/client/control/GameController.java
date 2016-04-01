@@ -3,13 +3,13 @@ package backgammon.client.control;
 import java.util.concurrent.SynchronousQueue;
 
 import backgammon.client.config.Config.Side;
-import backgammon.client.socket.Network;
+import backgammon.network.Network;
 
 /**
  * The purpose of this class is to provide an interface to communicate the
  * moves a player makes to the board representation
  * 
- * It will connect the Networking and the BasicBoard
+ * 
  * @author bobby
  *
  */
@@ -23,6 +23,11 @@ public class GameController {
 		this.triangleController = triangleController;
 	}
 	
+	/**
+	 * Dispatch a queue which reads and process events and then updates the board
+	 * by using the Triangle Controller. 
+	 * @param e
+	 */
 	public void dispatchEventThread(SynchronousQueue<Event> e) {
 		this.queue = e;
 		Thread t = new Thread(
@@ -37,7 +42,6 @@ public class GameController {
 				
 				while(!quit) {
 						while((event = e.poll()) != null) {
-							System.out.println("Received event");
 							if (event.hCircle != null) {
 								if (event.clicks == 1) {
 									triangleController.unhighlightAll();

@@ -6,13 +6,28 @@ import java.util.Scanner;
 
 import backgammon.client.config.Config.Side;
 
+/**
+ * A simple class for taking input and displaying the backgammon board in the console
+ * @author bobby
+ *
+ */
 public class TextBoard {
 	public BasicBoard myBoard = new BasicBoard();
 	
+	/**
+	 * Use a bash colour code to turn the message bold
+	 * @param message
+	 * @return
+	 */
 	private static String white(String message) {
 		return "\033[1m" + message + "\033[0m"; 
 	}
 	
+	/**
+	 * Just return the message, we could apply a bash colour code
+	 * @param message
+	 * @return
+	 */
 	private static String black(String message) {
 		return message;
 	}
@@ -33,6 +48,10 @@ public class TextBoard {
 		}
 	}
 	
+	/**
+	 * Colour a counter
+	 * @param triangle
+	 */
 	public void printCounter(TriangleInterface triangle) {
 		boolean sideBlack = (triangle.getSide() == Side.black);
 		String result = "" + getFormattedNumber(triangle.getCount());
@@ -46,6 +65,9 @@ public class TextBoard {
 		
 	}
 	
+	/**
+	 * Print a board
+	 */
 	public void print() {
 		System.out.println("Turn " + myBoard.getTurn());
 		System.out.println("DiceRoll " + myBoard.getDice().getMessage());
@@ -85,10 +107,10 @@ public class TextBoard {
 		
 	}
 	
-	public void drawCounters() {
-		
-	}
-	
+	/**
+	 * Get input from the user until their turn is over
+	 * @return
+	 */
 	public DiceAndSequencePair getInput() {
 		List<Pair> pairs = new ArrayList<Pair>();
 		DiceRollHolder holder = myBoard.diceHolder;
@@ -113,6 +135,10 @@ public class TextBoard {
 		return new DiceAndSequencePair(holder, sequences);
 	}
 	
+	/**
+	 * Acquires a Pair object from the console
+	 * @return
+	 */
 	public static Pair getPairFromUser() {
 		Scanner scanner = new Scanner(System.in);
 		boolean complete = false;

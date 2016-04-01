@@ -1,4 +1,4 @@
-package backgammon.client.socket;
+package backgammon.network;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +16,11 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
+/**
+ * This class abstracts the process of sending and receiving data from another machine
+ * @author bobby
+ *
+ */
 public class Network {
 	private Socket socket;
 	BufferedReader reader;
@@ -78,13 +83,20 @@ public class Network {
 		
 	}
 	
-	
+	/**
+	 * Send a message to the other machine
+	 * @param message
+	 */
 	public void sendMessage(String message) {
 		System.out.println("Sent: " + message);
 		writer.println(message);
 		writer.flush();
 	}
 	
+	/**
+	 * Receive a message from the other machine, only to be used within this class
+	 * @return
+	 */
 	public String getMessage() {
 		try {
 			return reader.readLine();
@@ -100,7 +112,10 @@ public class Network {
 		return queue;
 	}
 	
-	
+	/**
+	 * Launch dispatch thread if you want to receive all messages immediately and store them in a queuue
+	 * perhaps this can minimise blocking 
+	 */
 	public void dispatchThread() {
 		Thread t = new Thread(
 				new Runnable() {

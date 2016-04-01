@@ -13,6 +13,11 @@ import javax.swing.JOptionPane;
 
 import backgammon.client.config.Config;
 
+/**
+ * Paints a single circle
+ * @author bobby
+ *
+ */
 public class Circle extends JComponent {
 	protected Color myColor;
 	protected Color save;
