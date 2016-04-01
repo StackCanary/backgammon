@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.SynchronousQueue;
 
 import backgammon.client.config.Config.Side;
-import backgammon.engine.player.GUIPlayer;
+import backgammon.engine.player.TextPlayer;
 import backgammon.engine.player.NetworkPlayer;
 import backgammon.engine.player.Player;
 import backgammon.engine.player.PlayerPipe;
@@ -30,7 +30,6 @@ public class UniversalBoard extends BasicBoard {
 	}
 
 	public void gameLoop() {
-
 		Thread t = new Thread(
 				new Runnable() {
 
@@ -40,23 +39,36 @@ public class UniversalBoard extends BasicBoard {
 						PlayerPipe players = new PlayerPipe(player1, player2);
 						
 						boolean flag = false;
-						Player current, other = null;
+						Player current = null, other = null;
 						DiceRollHolder savedDice = null;
 						SequenceOfMoves savedSequence = null;
 						while(!gameOver) {
 							if (flag) {
+								Player save = current;
 								current = other;
-								other = players.getPlayer();
+								other = save;
+								System.out.println(current);
+								System.out.println(other);
 							} else {
 								//Make sure the current player is the Network Player
 								current = players.getPlayer();
 								current = (current instanceof NetworkPlayer) ? current : players.getPlayer();
+								other = players.getPlayer();
 								flag = true;
 								
 							}
 							
-							other = players.getPlayer();
+							if (current instanceof NetworkPlayer) {
+								System.out.println("Network player's turn");
+							}
+							
+							if (current instanceof TextPlayer) {
+								System.out.println("GUI player's turn");
+							}
+							
+							
 							System.out.println("LOOPING");
+							
 							if (!completedTurn) {
 
 								try {
@@ -77,7 +89,7 @@ public class UniversalBoard extends BasicBoard {
 												System.out.println("Skipping network player");
 											}
 											
-											if (current instanceof GUIPlayer) {
+											if (current instanceof TextPlayer) {
 												System.out.println("Skipping GUI player");
 											}
 											continue;
@@ -99,7 +111,7 @@ public class UniversalBoard extends BasicBoard {
 								}
 
 
-							} else {
+							} 
 								
 								//At each completed turn update the other player
 								if (other.playerReceivesSequences()) {
@@ -112,7 +124,6 @@ public class UniversalBoard extends BasicBoard {
 								//We may have another if statement here if the other player receives moves
 								//but we can avoid this
 
-							}
 
 						}				
 					}

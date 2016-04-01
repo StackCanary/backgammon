@@ -84,6 +84,7 @@ public class NetworkPlayer implements Player {
 	
 	@Override
 	public void updateThroughSequences(DiceRollHolder holder, SequenceOfMoves sequencesOfMoves) {
+		System.out.println("Update is broken?");
 		myProtocol.sendTurn(holder, sequencesOfMoves);
 	}
 	

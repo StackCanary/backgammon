@@ -15,24 +15,15 @@ import backgammon.engine.board.DiceAndSequencePair;
 import backgammon.engine.board.DiceRollHolder;
 import backgammon.engine.board.Pair;
 import backgammon.engine.board.SequenceOfMoves;
+import backgammon.engine.board.TextBoard;
 
-public class GUIPlayer implements Player {
-	private TriangleController tController;
-	private SynchronousQueue<Event> queue;
-	private ConcurrentLinkedQueue<SequenceOfMoves> moveQueue = new ConcurrentLinkedQueue<SequenceOfMoves>();
+public class TextPlayer implements Player {
+	private TextBoard textBoard;
 	private Side side;
 	
-	private Client client;
-	
-	private Side currentTurn;
-	private Side saveTurn;
-	
-	public GUIPlayer() {
-		client = client.createUIAndgetReference();
-		this.tController = client.gameview.triangleController;
+	public TextPlayer() {
+		textBoard = new TextBoard();
 		
-		//currentTurn = client.gameview.triangleController.board.getTurn();
-	//	saveTurn = currentTurn;
 	}
 
 	@Override
@@ -59,13 +50,12 @@ public class GUIPlayer implements Player {
 		// TODO Auto-generated method stub
 		SequenceOfMoves move;
 		
-		System.out.println("Back in the GUIPlayer");
+		System.out.println("Back in the TextPlayer");
 		
-		DiceAndSequencePair sequencePair;
-		while((sequencePair = tController.board.sequenceQueue.poll()) == null) {
+		DiceAndSequencePair sequencePair =  textBoard.getInput();
 			
-		}
-
+		System.out.println("We return in TextPlayer to get a move from the player");
+		
 		return sequencePair;
 	}
 	
@@ -83,18 +73,14 @@ public class GUIPlayer implements Player {
 	@Override
 	public void updateThroughSequences(DiceRollHolder holder, SequenceOfMoves sequencesOfMoves) {
 		
-		tController.board.changeDice(holder);
+		textBoard.myBoard.setDice(holder);
 		Iterator<Pair> iterator = sequencesOfMoves.getIterator();
 		while(iterator.hasNext()) {
 			Pair pair = iterator.next();
-			tController.move(pair.pos, pair.end);
-			try {
-				tController.getGameController().queue.put(new Event(null, null));
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			textBoard.myBoard.move(pair.pos, pair.end);
 		}
+		
+		System.out.println("We return in TextPlayer to update");
 	}
 
 	/**

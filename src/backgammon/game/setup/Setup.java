@@ -3,7 +3,7 @@ package backgammon.game.setup;
 import backgammon.client.socket.Network.NetworkRole;
 import backgammon.client.ui.ui.Client;
 import backgammon.engine.board.UniversalBoard;
-import backgammon.engine.player.GUIPlayer;
+import backgammon.engine.player.TextPlayer;
 import backgammon.engine.player.NetworkPlayer;
 
 public class Setup {
@@ -33,7 +33,7 @@ public class Setup {
 					@Override
 					public void run() {
 						NetworkPlayer networkPlayer;
-						GUIPlayer guiPlayer = new GUIPlayer();
+						TextPlayer guiPlayer = new TextPlayer();
 						
 						if (role == NetworkRole.client) {
 							networkPlayer = new NetworkPlayer(host, port);

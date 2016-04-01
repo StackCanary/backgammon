@@ -1,11 +1,13 @@
 package backgammon.engine.board;
 
-import com.sun.corba.se.impl.ior.GenericTaggedComponent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import backgammon.client.config.Config.Side;
 
 public class TextBoard {
-	private BasicBoard myBoard = new BasicBoard();
+	public BasicBoard myBoard = new BasicBoard();
 	
 	private static String white(String message) {
 		return "\033[1m" + message + "\033[0m"; 
@@ -45,6 +47,9 @@ public class TextBoard {
 	}
 	
 	public void print() {
+		System.out.println("Turn " + myBoard.getTurn());
+		System.out.println("DiceRoll " + myBoard.getDice().getMessage());
+		
 		for (int i = 12; i < 24; i++) {
 			printNumber(i + 1);
 			System.out.print(" ");
@@ -84,15 +89,54 @@ public class TextBoard {
 		
 	}
 	
-	public void getInput() {
+	public DiceAndSequencePair getInput() {
+		List<Pair> pairs = new ArrayList<Pair>();
+		DiceRollHolder holder = myBoard.diceHolder;
+		Side turn = myBoard.getTurn();
+		Side save = myBoard.getTurn();
 		
+		while(save == turn) {
+			print();
+			Pair pair = getPairFromUser();
+			if (!myBoard.move(pair.pos, pair.end)) {
+				System.out.println("Invalid move, please try again");
+			} else {
+				save = myBoard.getTurn();
+				pairs.add(pair);
+			}
+			
+		}
+		
+		System.out.println("Returning dice from TextBoard " + holder.x +":"+ holder.y);
+		
+		SequenceOfMoves sequences = new SequenceOfMoves(pairs);
+		return new DiceAndSequencePair(holder, sequences);
 	}
 	
-	public static void main(String[] args) {
-		TextBoard textBoard = new TextBoard();
-		textBoard.print();
+	public static Pair getPairFromUser() {
+		Scanner scanner = new Scanner(System.in);
+		boolean complete = false;
+		Pair pair = null;
+		
+		while(!complete) {
+			System.out.println();
+			System.out.print(">");
+			String result = scanner.nextLine();
+			if (result.matches("^[0-9]+?\\,[0-9]+?$")) {
+				String[] split = result.split(",");
+				int from = (Integer.parseInt(split[0]));
+				int to = (Integer.parseInt(split[1]));
+				
+				if ((from >= 1 && from <= 24) && (to >= 1 && to <= 24)) {
+					pair = new Pair(from, to);
+					complete = true;
+				}
+				
+			} 
+		}
+		
+		return pair;
 	}
-	
 	
 	
 }
